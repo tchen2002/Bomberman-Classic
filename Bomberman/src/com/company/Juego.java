@@ -1,14 +1,27 @@
 package com.company;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Timer;
 
-public class Juego implements Runnable{
+import static com.sun.java.accessibility.util.AWTEventMonitor.addKeyListener;
+
+public class Juego implements Runnable, ActionListener {
+
+
+
+    private PersonajeElement personajeElement;
     private GamePanel gamePanel;
+    private KeyManager keyManager;
+    private Heroe heroe;
+    //private State juegoState;
+
     private int CantVillano,Velocidad;
     public static int Largo,Ancho, ProbaLadrillo;
 
@@ -23,6 +36,7 @@ public class Juego implements Runnable{
     public Juego(){
         leerDatos("Img/archiConf.txt");
         Tablero tablero = new Tablero(Largo,Ancho,ProbaLadrillo);
+        keyManager = new KeyManager();
 
     }
 
@@ -67,6 +81,14 @@ public class Juego implements Runnable{
         }
     }
 
+    private void tick(){
+        keyManager.tick();
+        //heroe.tick(this);
+     /*   if(State.getCurrentState()!=null)
+            State.getCurrentState().tick();
+*/
+    }
+
     private void render(){
         bs=gamePanel.getCanvas().getBufferStrategy();
         if(bs==null){
@@ -76,8 +98,14 @@ public class Juego implements Runnable{
         g = bs.getDrawGraphics();
 
         g.clearRect(0,0,Ancho*30,Largo*30);
-        gamePanel.dibujarMapa(g);
 
+        gamePanel.dibujarMapa(g);
+        //heroe.tick(this);
+        heroe.render(g);
+        /*
+        if(State.getCurrentState()!=null)
+            State.getCurrentState().render(g);
+*/
         //g.setColor(Color.green);
         //g.fillRect(0,0,Ancho*30,Largo*30);
 
@@ -87,7 +115,15 @@ public class Juego implements Runnable{
 
     public void init(){
         gamePanel = new GamePanel(Ancho*30,Largo*30);
+        //gamePanel.getFrame().addKeyListener(keyManager);
+        gamePanel.getFrame().addKeyListener(new KeyManager());
+        personajeElement = new PersonajeElement();
+        heroe = new Heroe(30,30,30,30,true);
         //PruebaImagen = GamePanel.loadImage("Img/acero.jpg");
+       /* juegoState = new JuegoState();
+        State.setCurrentState(juegoState);*/
+
+
     }
 
     @Override
@@ -95,8 +131,13 @@ public class Juego implements Runnable{
         init();
 
         while(running){
+            tick();
             render();
         }
+    }
+
+    public KeyManager getKeyManager(){
+        return keyManager;
     }
 
     public synchronized void start(){
@@ -117,4 +158,8 @@ public class Juego implements Runnable{
         }
     }
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+    }
 }

@@ -1,7 +1,5 @@
 package com.company;
 
-import com.sun.javafx.iio.ImageLoader;
-
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
@@ -44,6 +42,7 @@ public class GamePanel {
         canvas.setPreferredSize(new Dimension(AnchoTablero, LargoTablero));
         canvas.setMaximumSize(new Dimension(AnchoTablero, LargoTablero));
         canvas.setMinimumSize(new Dimension(AnchoTablero, LargoTablero));
+        canvas.setFocusable(false);
 
         frame.add(canvas);
         frame.pack();
@@ -76,5 +75,10 @@ public class GamePanel {
 
     public Canvas getCanvas() {
         return canvas;
+    }
+
+    public JFrame getFrame(){return frame;}
+
+    public void addKeyListener(KeyManager keyManager) {
     }
 }

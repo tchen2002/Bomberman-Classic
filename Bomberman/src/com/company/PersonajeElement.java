@@ -56,8 +56,11 @@ public class PersonajeElement {
     }
 
 
-    public static void rebotar(){
+    public static void rebotar(Graphics g,int id,int x,int y){
+        
         animacion_globo_rebotando.tick();
+        g.drawImage(animacion_globo_rebotando.getCurrentFrame(),x,y,null);
+        Nivel.list_villano.get(id).setCamino(true);
     }
 
     public static void explosion(){
@@ -94,6 +97,15 @@ public class PersonajeElement {
                 estado_bombda=true;
             }
         } ,2000);
+    }
+
+    public static void dibujar_globo(Graphics g,int id, int x,int y){
+        if(Nivel.list_villano.get(id).getCamino()){
+            g.drawImage(villano1,x,y,null);
+        }else{
+            rebotar(g,id,x,y);
+        }
+
     }
 
     public static BufferedImage loadImage(String path){

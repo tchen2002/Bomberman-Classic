@@ -19,7 +19,6 @@ public class Juego implements Runnable, ActionListener {
     private GamePanel gamePanel;
     private KeyManager keyManager;
     private Heroe heroe;
-    private Villano villano1;
 
     private int CantVillano,Velocidad;
     public static int Largo,Ancho, ProbaLadrillo;
@@ -90,7 +89,6 @@ public class Juego implements Runnable, ActionListener {
 
         gamePanel.dibujarMapa(g);
         heroe.render(g);
-        //villano1.render(g);
         Villano.DibujarVillanos(g);
         bs.show();
         g.dispose();
@@ -102,7 +100,7 @@ public class Juego implements Runnable, ActionListener {
         gamePanel.getFrame().addKeyListener(new KeyManager());
         personajeElement = new PersonajeElement();
         heroe = new Heroe(0,30,30,30,30,true,3,0,0);
-        villano1 = new Villano(1,60,30,60,2,true);
+
 
     }
 

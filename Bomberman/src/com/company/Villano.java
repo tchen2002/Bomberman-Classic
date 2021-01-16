@@ -11,15 +11,16 @@ public class Villano extends Personaje{
     private Graphics g;
     private int colision;
     private int id,PosX,PosY,Velocidad,Direccion;
-    private boolean Estado;
+    private boolean Estado,Camino;
 
-    public Villano(int id,int PosX, int PosY, int Velocidad, int Direccion, boolean Estado) {
+    public Villano(int id,int PosX, int PosY, int Velocidad, int Direccion, boolean Estado,boolean Camino) {
         this.id=id;
         this.PosX=PosX;
         this.PosY=PosY;
         this.Velocidad=Velocidad;
         this.Direccion=Direccion;
         this.Estado=Estado;
+        this.Camino=Camino;
     }
 
     @Override
@@ -32,17 +33,9 @@ public class Villano extends Personaje{
 
     }
     public static void DibujarVillanos(Graphics g){
-
-
-        //g.drawImage(PersonajeElement.villano1,Nivel.list_villano.get(0).getPosY()*30 , Nivel.list_villano.get(0).getPosX()*30,null);
-       // g.drawImage(PersonajeElement.villano1,Nivel.list_villano.get(1).getPosY()*30 , Nivel.list_villano.get(1).getPosX()*30,null);
-        //InteligenciaArtificial.MoverRnd(Nivel.list_villano.get(0).getId());
-        //InteligenciaArtificial.moverRandom(Nivel.list_villano.get(1).getId());
-        //InteligenciaArtificial.MoverRnd(Nivel.list_villano.get(0).getId(),Nivel.list_villano.get(0).getPosX(),Nivel.list_villano.get(0).getPosY(),Nivel.list_villano.get(0).getDireccion());
-
-
         for(int i=0;i<10;i++){
-            g.drawImage(PersonajeElement.villano1,Nivel.list_villano.get(i).getPosY()*30 , Nivel.list_villano.get(i).getPosX()*30,null);
+            PersonajeElement.dibujar_globo(g,Nivel.list_villano.get(i).getId(),Nivel.list_villano.get(i).getPosY()*30 , Nivel.list_villano.get(i).getPosX()*30);
+            //g.drawImage(PersonajeElement.villano1,Nivel.list_villano.get(i).getPosY()*30 , Nivel.list_villano.get(i).getPosX()*30,null);
             InteligenciaArtificial.MoverRnd(Nivel.list_villano.get(i).getId());
         }
     }
@@ -93,5 +86,13 @@ public class Villano extends Personaje{
 
     public void setEstado(boolean estado) {
         Estado = estado;
+    }
+
+    public boolean getCamino() {
+        return Camino;
+    }
+
+    public void setCamino(boolean camino) {
+        Camino = camino;
     }
 }

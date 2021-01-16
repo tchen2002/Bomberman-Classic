@@ -54,7 +54,7 @@ public class Nivel {
                 y=ram.nextInt(Juego.Ancho-1);
             }
         }
-        list_villano.add(new Villano(i,x,y,0,Dir,est));
+        list_villano.add(new Villano(i,x,y,0,Dir,est,true));
     }
 
     public int getNivel() {

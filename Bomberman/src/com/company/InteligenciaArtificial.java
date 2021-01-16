@@ -11,20 +11,6 @@ public class InteligenciaArtificial {
         TipoInteligencia = tipoInteligencia;
     }
 
-    public static void mover(int id){
-        Nivel.list_villano.get(id).setPosX((Nivel.list_villano.get(id).getPosX())-1);
-        Nivel.list_villano.get(id).setPosY((Nivel.list_villano.get(id).getPosY())-1);
-    }
-
-    public static void moverRandom(int id){
-        System.out.println("ANTES");
-        System.out.println("POSY"+(Nivel.list_villano.get(id).getPosX())+"POSX"+(Nivel.list_villano.get(id).getPosY()));
-        Nivel.list_villano.get(id).setPosX((Nivel.list_villano.get(id).getPosX())-1);
-        Nivel.list_villano.get(id).setPosY((Nivel.list_villano.get(id).getPosY())-1);
-        System.out.println("DESPUES");
-        System.out.println("POSY"+(Nivel.list_villano.get(id).getPosX())+"POSX"+(Nivel.list_villano.get(id).getPosY()));
-    }
-
     public static void MoverRnd(int id){
         Random ram = new Random();
         int a,b,c,colision,D;
@@ -40,6 +26,7 @@ public class InteligenciaArtificial {
             }else{
                 D= ram.nextInt(4);
                 Nivel.list_villano.get(id).setDireccion(D);
+                Nivel.list_villano.get(id).setCamino(false);
             }
         }
 
@@ -49,6 +36,7 @@ public class InteligenciaArtificial {
             }else{
                 D= ram.nextInt(4);
                 Nivel.list_villano.get(id).setDireccion(D);
+                Nivel.list_villano.get(id).setCamino(false);
             }
         }
 
@@ -58,6 +46,7 @@ public class InteligenciaArtificial {
             }else{
                 D= ram.nextInt(4);
                 Nivel.list_villano.get(id).setDireccion(D);
+                Nivel.list_villano.get(id).setCamino(false);
             }
         }
 
@@ -67,8 +56,8 @@ public class InteligenciaArtificial {
             }else{
                 D= ram.nextInt(4);
                 Nivel.list_villano.get(id).setDireccion(D);
+                Nivel.list_villano.get(id).setCamino(false);
             }
         }
-
     }
 }

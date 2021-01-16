@@ -8,19 +8,18 @@ import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Timer;
-
-import static com.sun.java.accessibility.util.AWTEventMonitor.addKeyListener;
+import java.util.ArrayList;
 
 public class Juego implements Runnable, ActionListener {
 
 
-
+    static ArrayList<Bomba> list_bomba = new ArrayList<Bomba>();
+    static ArrayList<Bomba> list_bomba_explosion = new ArrayList<Bomba>();
     private PersonajeElement personajeElement;
     private GamePanel gamePanel;
     private KeyManager keyManager;
     private Heroe heroe;
-    //private State juegoState;
+    private Villano villano1;
 
     private int CantVillano,Velocidad;
     public static int Largo,Ancho, ProbaLadrillo;
@@ -29,13 +28,12 @@ public class Juego implements Runnable, ActionListener {
     private Thread thread;
 
     private BufferStrategy bs;
-    private Graphics g;
-
-    private BufferedImage PruebaImagen;
+    public static Graphics g;
 
     public Juego(){
         leerDatos("Img/archiConf.txt");
         Tablero tablero = new Tablero(Largo,Ancho,ProbaLadrillo);
+        Nivel nivel = new Nivel(1,CantVillano);
         keyManager = new KeyManager();
 
     }
@@ -48,11 +46,6 @@ public class Juego implements Runnable, ActionListener {
         ProbaLadrillo = parseInt(tokens[2]);
         CantVillano = parseInt(tokens[3]);
         Velocidad = parseInt(tokens[4]);
-        System.out.println("largo " + Largo );
-        System.out.println("ancho " + Ancho );
-        System.out.println("probaLadrillo " + ProbaLadrillo );
-        System.out.println("CantVillano " + CantVillano );
-        System.out.println("Velocidad " + Velocidad );
 
     }
 
@@ -83,10 +76,6 @@ public class Juego implements Runnable, ActionListener {
 
     private void tick(){
         keyManager.tick();
-        //heroe.tick(this);
-     /*   if(State.getCurrentState()!=null)
-            State.getCurrentState().tick();
-*/
     }
 
     private void render(){
@@ -100,15 +89,9 @@ public class Juego implements Runnable, ActionListener {
         g.clearRect(0,0,Ancho*30,Largo*30);
 
         gamePanel.dibujarMapa(g);
-        //heroe.tick(this);
         heroe.render(g);
-        /*
-        if(State.getCurrentState()!=null)
-            State.getCurrentState().render(g);
-*/
-        //g.setColor(Color.green);
-        //g.fillRect(0,0,Ancho*30,Largo*30);
-
+        //villano1.render(g);
+        Villano.DibujarVillanos(g);
         bs.show();
         g.dispose();
     }
@@ -118,11 +101,8 @@ public class Juego implements Runnable, ActionListener {
         //gamePanel.getFrame().addKeyListener(keyManager);
         gamePanel.getFrame().addKeyListener(new KeyManager());
         personajeElement = new PersonajeElement();
-        heroe = new Heroe(30,30,30,30,true);
-        //PruebaImagen = GamePanel.loadImage("Img/acero.jpg");
-       /* juegoState = new JuegoState();
-        State.setCurrentState(juegoState);*/
-
+        heroe = new Heroe(0,30,30,30,30,true,3,0,0);
+        villano1 = new Villano(1,60,30,60,2,true);
 
     }
 
@@ -130,10 +110,33 @@ public class Juego implements Runnable, ActionListener {
     public void run() {
         init();
 
+        int fps = 3;
+        double timePerTick = 1000000000 / fps;
+        double delta = 0;
+        long now;
+        long lastTime = System.nanoTime();
+        long timer = 0;
+        int ticks = 0;
+
         while(running){
-            tick();
-            render();
+            now = System.nanoTime();
+            delta += (now - lastTime) / timePerTick;
+            timer += now - lastTime;
+            lastTime = now;
+
+            if(delta >= 1){
+                tick();
+                render();
+                ticks++;
+                delta--;
+            }
+
+            if(timer >= 1000000000){
+                ticks = 0;
+                timer = 0;
+            }
         }
+        stop();
     }
 
     public KeyManager getKeyManager(){

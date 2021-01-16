@@ -4,19 +4,32 @@ import java.awt.*;
 
 public abstract class Personaje {
 
-    public static int PosX,PosY,Velocidad,Dirección;
+    private int id,PosX,PosY,Velocidad,Direccion;
     private boolean Estado;
 
-    public Personaje(int PosX, int PosY, int Velocidad, int Dirección, boolean Estado) {
+    public Personaje(int id,int PosX, int PosY, int Velocidad, int Direccion, boolean Estado) {
+        this.id=id;
         this.PosX = PosX;
         this.PosY = PosY;
         this.Velocidad = Velocidad;
-        this.Dirección = Dirección;
+        this.Direccion = Direccion;
         this.Estado = Estado;
+    }
+
+    public Personaje() {
+
     }
 
     public abstract void tick(int dir);
     public abstract void render(Graphics g);
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public int getPosX() {
         return PosX;
@@ -42,12 +55,12 @@ public abstract class Personaje {
         Velocidad = velocidad;
     }
 
-    public int getDirección() {
-        return Dirección;
+    public int getDireccion() {
+        return Direccion;
     }
 
-    public void setDirección(int dirección) {
-        Dirección = dirección;
+    public void setDireccion(int direccion) {
+        Direccion = direccion;
     }
 
     public boolean isEstado() {

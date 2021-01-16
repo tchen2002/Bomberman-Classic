@@ -1,8 +1,10 @@
 package com.company;
+import javafx.geometry.Pos;
+
 import java.util.*;
 
 public class Tablero {
-    static char[][] Mapa;
+    public static char[][] Mapa;
     int Largo, Ancho,ProbaLadrillo;
 
     public Tablero(int Largo,int Ancho,int ProbaLadrillo){
@@ -21,21 +23,15 @@ public class Tablero {
                 }else if( (i==0) || (j==0) || (i== (Largo-1)) || (j==(Ancho-1)) ){
                     this.Mapa[i][j] = 'A';
                 }else if( (i%2==0) && (j%2==0)){
-                        this.Mapa[i][j] = 'A';
+                    this.Mapa[i][j] = 'A';
                 }else{
-                   if(generarRandom()){
-                       this.Mapa[i][j]='L';
-                   }else{
-                       this.Mapa[i][j] = '-';
-                   }
+                    if(generarRandom()){
+                        this.Mapa[i][j]='L';
+                    }else{
+                        this.Mapa[i][j] = '-';
+                    }
                 }
             }
-        }
-        for (int i = 0; i < Largo; i++) {
-            for (int j = 0; j < Ancho; j++) {
-                System.out.print(this.Mapa[i][j] + " ");
-            }
-            System.out.println(" ");
         }
     }
 
@@ -44,12 +40,34 @@ public class Tablero {
         double num;
         Random rand = new Random();
         num = rand.nextInt(100);
-        System.out.println(num);
-        System.out.println(ProbaLadrillo);
         if(num>ProbaLadrillo)  res=false;
         else res=true;
         return res;
     }
+    public static boolean tipoCuadrado(int i, int j){
+        if(Mapa[i][j] == 'A' || Mapa[i][j] == 'L'){
+            return false;
+        }
+        return true;
+    }
+
+    public static int colision(int i, int j,int dir){
+        if (dir == 0) {  i -= 1;  }
+
+        if (dir == 1) {  i += 1;  }
+
+        if (dir == 2) {  j -= 1;  }
+
+        if (dir == 3) {  j += 1;  }
+
+        if(Mapa[i][j] == 'A' || Mapa[i][j] == 'L'){
+            return 1;
+        }
+
+        return 0;
+
+    }
+
 
     public char[][] getMapa() {
         return Mapa;
@@ -59,10 +77,8 @@ public class Tablero {
         Mapa = mapa;
     }
 
-    public static char TipoCuadrado(int x,int y){
-        System.out.println(Mapa[0][0]);
-        return Mapa[x][y];
-    }
+
+
 }
 
 

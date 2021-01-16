@@ -1,5 +1,6 @@
 package com.company;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -12,12 +13,6 @@ public class KeyManager implements KeyListener, ActionListener {
 
     public KeyManager(){
         keys = new boolean[256];
-    }
-
-    public void mover(int dir){
-        Heroe.mover(dir);
-        System.out.println("hola");
-
     }
 
     public void tick(){
@@ -43,6 +38,12 @@ public class KeyManager implements KeyListener, ActionListener {
         if(keys[KeyEvent.VK_D] || keys[KeyEvent.VK_RIGHT]){
             Heroe.mover(3);
         }
+
+        if(keys[KeyEvent.VK_X]){
+            System.out.println("BOMBAAAA");
+            Heroe.ColocarBomba();
+        }
+
     }
 
     @Override

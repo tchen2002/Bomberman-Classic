@@ -12,11 +12,9 @@ import javax.swing.JFrame;
 public class GamePanel {
 
     private BufferStrategy bs;
-    private Graphics g;
     private JFrame frame;
     private Canvas canvas;
-    private Tablero tablero;
-    public static BufferedImage acero,ladrillo,sacate;
+    public static BufferedImage acero,ladrillo,sacate,bomba;
 
     private int LargoTablero,AnchoTablero;
 
@@ -27,7 +25,7 @@ public class GamePanel {
         acero = loadImage("Img/acero.jpg");
         ladrillo = loadImage("Img/ladrillo.jpeg");
         sacate = loadImage("Img/sacate.jpeg");
-
+        bomba = loadImage("Img/bomba.png");
     }
 
     private void createPanel(){
@@ -60,6 +58,7 @@ public class GamePanel {
     }
 
     public void dibujarMapa(Graphics g){
+
         for(int x = 0;x <(AnchoTablero/30);x++){
             for(int y = 0;y< (LargoTablero/30);y++){
 
@@ -71,7 +70,17 @@ public class GamePanel {
                     g.drawImage(sacate,x*30,y*30,null);
             }
         }
+        if(dibujarBomba()) {
+            g.drawImage(bomba,Juego.list_bomba.get(0).getPosY(),Juego.list_bomba.get(0).getPosX(),null);
+        }
     }
+
+    public static boolean dibujarBomba(){
+        if(Juego.list_bomba.isEmpty()) return false;
+        else return true;
+    }
+
+
 
     public Canvas getCanvas() {
         return canvas;

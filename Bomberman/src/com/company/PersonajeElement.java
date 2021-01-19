@@ -6,12 +6,13 @@ import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import javax.swing.JFrame;
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class PersonajeElement {
 
+    private static ArrayList<Integer> list_explosion = new ArrayList<Integer>();
     private static boolean estado_bombda;
     private BufferStrategy bs;
     private Graphics g;
@@ -67,34 +68,49 @@ public class PersonajeElement {
         animacion_bomba.tick();
     }
 
-    /*
     public static void render(Graphics g,int PosX, int PosY){
-
-        //rebotar();
-        //g.drawImage(animacion_globo_rebotando.getCurrentFrame(),120,120,null);
-
-        heroe_anima();
-        g.drawImage(animacion_heroe.getCurrentFrame(),PosX,PosY,null);
         if(estado_bombda){
             explosion();
-            g.drawImage(animacion_bomba.getCurrentFrame(),60,60,null);
+            //PONGO 2 PARA PRUEBAS
+            //ArrayList<Bomba> lista = Tablero.explosion(list_explosion.get(0),list_explosion.get(1),);
+            ArrayList<Bomba> lista = Tablero.explosion(list_explosion.get(0),list_explosion.get(1),Heroe.getCantCupon()+1);
+           /* for (int c=0;c<lista.size();c++) {
+                System.out.println("POSX"+lista.get(c).getPosX()+"POSY"+lista.get(c).getPosY());
+            }*/
+            for (int c=0;c<lista.size();c++) {
+                g.drawImage(animacion_bomba.getCurrentFrame(),lista.get(c).getPosY()*30,lista.get(c).getPosX()*30,null);
+            }
+
+
         }
+        Timer time = new Timer();
+        time.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                estado_bombda=false;
+
+            }
+        } ,2000);
 
     }
-    */
 
     public static void dibujar_heroe(Graphics g,int PosX, int PosY){
         heroe_anima();
-        g.drawImage(animacion_heroe.getCurrentFrame(),PosX,PosY,null);
+        g.drawImage(animacion_heroe.getCurrentFrame(),PosY*30,PosX*30,null);
+        render(g,60,60);
     }
 
     public static void dibujarExplosion(int x,int y){
-        System.out.println("hello cochinada");
         Timer time = new Timer();
         time.schedule(new TimerTask() {
             @Override
             public void run() {
                 estado_bombda=true;
+                list_explosion.clear();
+                list_explosion.add((Juego.list_bomba.get(0).getPosX()));
+                list_explosion.add((Juego.list_bomba.get(0).getPosY()));
+                Juego.list_bomba.remove(0);
+
             }
         } ,2000);
     }
@@ -105,7 +121,6 @@ public class PersonajeElement {
         }else{
             rebotar(g,id,x,y);
         }
-
     }
 
     public static BufferedImage loadImage(String path){

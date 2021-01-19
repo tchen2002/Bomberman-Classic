@@ -1,5 +1,4 @@
 package com.company;
-import javafx.geometry.Pos;
 
 import java.util.*;
 
@@ -68,6 +67,52 @@ public class Tablero {
 
     }
 
+    public static ArrayList<Bomba> explosion(int i, int j,int largo){
+        ArrayList<Bomba> list_pos = new ArrayList<Bomba>();
+        list_pos.add(new Bomba(i,j));
+        System.out.println("HELLOPOSX"+list_pos.get(0).getPosX()+"POSY"+list_pos.get(0).getPosY());
+        for (int cont = 1;cont<=largo;cont++) {
+            if (Mapa[i + cont][j] != 'A') {
+                Mapa[i + cont][j] = '-';
+                list_pos.add(new Bomba(i + cont,j));
+            }else{
+                break;
+            }
+        }
+
+        for (int cont = 1;cont<=largo;cont++) {
+            if (Mapa[i-cont][j] != 'A'){
+                Mapa[i-cont][j]= '-';
+                list_pos.add(new Bomba(i - cont,j));
+            }else{
+                break;
+            }
+        }
+
+        for (int cont = 1;cont<=largo;cont++) {
+            if (Mapa[i][j+ cont] != 'A'){
+                Mapa[i][j+ cont]= '-';
+                list_pos.add(new Bomba(i,j+cont));
+            }else{
+                break;
+            }
+        }
+
+        for (int cont = 1;cont<=largo;cont++) {
+            if (Mapa[i][j-cont] != 'A') {
+                Mapa[i][j-cont] = '-';
+                list_pos.add(new Bomba(i,j-cont));
+            }else{
+                break;
+            }
+        }
+        /*
+        System.out.println("LARGO"+list_pos.size());
+        for (int c=0;c<list_pos.size();c++) {
+            System.out.println("POSX"+list_pos.get(c).getPosX()+"POSY"+list_pos.get(c).getPosY());
+        }*/
+        return(list_pos);
+    }
 
     public char[][] getMapa() {
         return Mapa;

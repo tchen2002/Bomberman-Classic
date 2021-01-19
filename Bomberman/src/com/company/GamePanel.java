@@ -8,7 +8,6 @@ import java.io.File;
 import java.io.IOException;
 import javax.swing.JFrame;
 
-
 public class GamePanel {
 
     private BufferStrategy bs;
@@ -71,7 +70,12 @@ public class GamePanel {
             }
         }
         if(dibujarBomba()) {
-            g.drawImage(bomba,Juego.list_bomba.get(0).getPosY(),Juego.list_bomba.get(0).getPosX(),null);
+            for(int i=0;i<Juego.list_bomba.size();i++){
+                g.drawImage(bomba,Juego.list_bomba.get(i).getPosY()*30,Juego.list_bomba.get(i).getPosX()*30,null);
+
+
+            }
+
         }
     }
 

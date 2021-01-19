@@ -5,7 +5,6 @@ import java.util.Random;
 
 public class InteligenciaArtificial {
     private int TipoInteligencia;
-    //private static int colision;
 
     public InteligenciaArtificial(int tipoInteligencia) {
         TipoInteligencia = tipoInteligencia;
@@ -17,9 +16,7 @@ public class InteligenciaArtificial {
         a=Nivel.list_villano.get(id).getPosX();
         b=Nivel.list_villano.get(id).getPosY();
         c=Nivel.list_villano.get(id).getDireccion();
-        System.out.println(a+" "+b+" "+c);
         colision = Tablero.colision(a,b,c);
-        System.out.println(colision);
         if(c==0){
             if(Tablero.tipoCuadrado(a-1,b)){
                 Nivel.list_villano.get(id).setPosX(a-1);

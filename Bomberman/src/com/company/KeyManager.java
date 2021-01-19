@@ -40,7 +40,6 @@ public class KeyManager implements KeyListener, ActionListener {
         }
 
         if(keys[KeyEvent.VK_X]){
-            System.out.println("BOMBAAAA");
             Heroe.ColocarBomba();
         }
 

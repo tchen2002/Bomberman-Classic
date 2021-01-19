@@ -4,7 +4,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferStrategy;
-import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -99,9 +98,7 @@ public class Juego implements Runnable, ActionListener {
         //gamePanel.getFrame().addKeyListener(keyManager);
         gamePanel.getFrame().addKeyListener(new KeyManager());
         personajeElement = new PersonajeElement();
-        heroe = new Heroe(0,30,30,30,30,true,3,0,0);
-
-
+        heroe = new Heroe(0,1,1,30,0,true,3,1,0);
     }
 
     @Override

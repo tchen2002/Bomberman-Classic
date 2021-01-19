@@ -1,18 +1,18 @@
 package com.company;
 
-import javafx.geometry.Pos;
-
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.util.Timer;
-import java.util.TimerTask;
-
 public class Bomba{
     private int PosX,PosY,LargoBomba,CantBomba;
+    private boolean Estado;
+
+    public Bomba(int posX, int posY, boolean Estado) {
+        this.PosX = posX;
+        this.PosY = posY;
+        this.Estado = Estado;
+    }
 
     public Bomba(int posX, int posY) {
-        PosX = posX;
-        PosY = posY;
+        this.PosX = posX;
+        this.PosY = posY;
     }
 
     public static void render(){
@@ -52,4 +52,11 @@ public class Bomba{
         CantBomba = cantBomba;
     }
 
+    public boolean getEstado() {
+        return Estado;
+    }
+
+    public void setEstado(boolean estado) {
+        Estado = estado;
+    }
 }

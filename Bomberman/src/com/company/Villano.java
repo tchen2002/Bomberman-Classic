@@ -1,15 +1,9 @@
 package com.company;
 
 import java.awt.*;
-import java.awt.image.BufferStrategy;
-import java.util.ArrayList;
-import java.util.Random;
 
 public class Villano extends Personaje{
 
-    private BufferStrategy bs;
-    private Graphics g;
-    private int colision;
     private int id,PosX,PosY,Velocidad,Direccion;
     private boolean Estado,Camino;
 
@@ -35,7 +29,6 @@ public class Villano extends Personaje{
     public static void DibujarVillanos(Graphics g){
         for(int i=0;i<10;i++){
             PersonajeElement.dibujar_globo(g,Nivel.list_villano.get(i).getId(),Nivel.list_villano.get(i).getPosY()*30 , Nivel.list_villano.get(i).getPosX()*30);
-            //g.drawImage(PersonajeElement.villano1,Nivel.list_villano.get(i).getPosY()*30 , Nivel.list_villano.get(i).getPosX()*30,null);
             InteligenciaArtificial.MoverRnd(Nivel.list_villano.get(i).getId());
         }
     }

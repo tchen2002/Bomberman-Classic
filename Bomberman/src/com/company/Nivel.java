@@ -21,15 +21,6 @@ public class Nivel {
             int Dir=generarRandom();
             llenarArreglo(i,Dir);
         }
-        for(int i=0;i<getCantVillano();i++){
-            System.out.println("VILLAANO"+i);
-            System.out.println(list_villano.get(i).getId());
-            System.out.println(list_villano.get(i).getPosX());
-            System.out.println(list_villano.get(i).getPosY());
-            System.out.println(list_villano.get(i).getVelocidad());
-            System.out.println(list_villano.get(i).getDireccion());
-            System.out.println(list_villano.get(i).getEstado());
-        }
     }
 
     public int generarRandom(){

@@ -14,6 +14,7 @@ public class Tablero {
         llenarMatriz();
     }
 
+
     public void llenarMatriz(){
         for (int i = 0; i < Largo; i++) {
             for (int j = 0; j < Ancho; j++) {
@@ -32,6 +33,8 @@ public class Tablero {
                 }
             }
         }
+
+
     }
 
     public boolean generarRandom(){
@@ -106,11 +109,6 @@ public class Tablero {
                 break;
             }
         }
-        /*
-        System.out.println("LARGO"+list_pos.size());
-        for (int c=0;c<list_pos.size();c++) {
-            System.out.println("POSX"+list_pos.get(c).getPosX()+"POSY"+list_pos.get(c).getPosY());
-        }*/
         return(list_pos);
     }
 

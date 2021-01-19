@@ -1,6 +1,7 @@
 package com.company;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
@@ -73,7 +74,7 @@ public class PersonajeElement {
             explosion();
             //PONGO 2 PARA PRUEBAS
             //ArrayList<Bomba> lista = Tablero.explosion(list_explosion.get(0),list_explosion.get(1),);
-            ArrayList<Bomba> lista = Tablero.explosion(list_explosion.get(0),list_explosion.get(1),Heroe.getCantCupon()+1);
+            ArrayList<Bomba> lista = Tablero.explosion(list_explosion.get(0),list_explosion.get(1),Heroe.getCantCupon()+3);
            /* for (int c=0;c<lista.size();c++) {
                 System.out.println("POSX"+lista.get(c).getPosX()+"POSY"+lista.get(c).getPosY());
             }*/
@@ -110,6 +111,13 @@ public class PersonajeElement {
                 list_explosion.add((Juego.list_bomba.get(0).getPosX()));
                 list_explosion.add((Juego.list_bomba.get(0).getPosY()));
                 Juego.list_bomba.remove(0);
+                try {
+                    Sonido.ReproducirSonido("Img/boom.wav");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (UnsupportedAudioFileException e) {
+                    e.printStackTrace();
+                }
 
             }
         } ,2000);

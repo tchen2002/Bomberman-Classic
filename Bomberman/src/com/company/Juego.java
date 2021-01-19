@@ -33,7 +33,6 @@ public class Juego implements Runnable, ActionListener {
         Tablero tablero = new Tablero(Largo,Ancho,ProbaLadrillo);
         Nivel nivel = new Nivel(1,CantVillano);
         keyManager = new KeyManager();
-
     }
 
     private void leerDatos(String path){
@@ -44,7 +43,6 @@ public class Juego implements Runnable, ActionListener {
         ProbaLadrillo = parseInt(tokens[2]);
         CantVillano = parseInt(tokens[3]);
         Velocidad = parseInt(tokens[4]);
-
     }
 
     public static String loadFileAsString(String path){

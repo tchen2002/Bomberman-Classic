@@ -8,11 +8,16 @@ public class Nivel {
     public static ArrayList<Villano> list_villano = new ArrayList<Villano>();
     private int nivel,cantVillano;
     private Villano villano;
+    public static Puerta puerta;
 
     public Nivel(int nivel,int cantVillano){
         this.nivel = nivel;
         this.cantVillano=cantVillano;
         Poisson();
+        generarPuerta();
+        System.out.println("COCHIANDA");
+        System.out.println(puerta.getPosX());
+        System.out.println(puerta.getPosY());
     }
 
     public void Poisson(){
@@ -21,6 +26,18 @@ public class Nivel {
             int Dir=generarRandom();
             llenarArreglo(i,Dir);
         }
+    }
+
+    public void generarPuerta(){
+        int x,y;
+        Random ram = new Random();
+        x=ram.nextInt(Juego.Largo-1);
+        y=ram.nextInt(Juego.Ancho-1);
+        while(Tablero.Mapa[x][y] != 'L'){
+            x=ram.nextInt(Juego.Largo-1);
+            y=ram.nextInt(Juego.Ancho-1);
+        }
+        puerta = new Puerta(x,y,true);
     }
 
     public int generarRandom(){

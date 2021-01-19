@@ -13,7 +13,7 @@ public class GamePanel {
     private BufferStrategy bs;
     private JFrame frame;
     private Canvas canvas;
-    public static BufferedImage acero,ladrillo,sacate,bomba;
+    public static BufferedImage acero,ladrillo,sacate,bomba,puertita;
 
     private int LargoTablero,AnchoTablero;
 
@@ -21,10 +21,11 @@ public class GamePanel {
         this.AnchoTablero= AnchoTablero;
         this.LargoTablero= LargoTablero;
         createPanel();
-        acero = loadImage("Img/acero.jpg");
-        ladrillo = loadImage("Img/ladrillo.jpeg");
-        sacate = loadImage("Img/sacate.jpeg");
+        acero = loadImage("Img/acero.png");
+        ladrillo = loadImage("Img/ladrillo.png");
+        sacate = loadImage("Img/cesped.png");
         bomba = loadImage("Img/bomba.png");
+        puertita = loadImage("Img/puerta.png");
     }
 
     private void createPanel(){
@@ -72,12 +73,22 @@ public class GamePanel {
         if(dibujarBomba()) {
             for(int i=0;i<Juego.list_bomba.size();i++){
                 g.drawImage(bomba,Juego.list_bomba.get(i).getPosY()*30,Juego.list_bomba.get(i).getPosX()*30,null);
-
-
             }
-
         }
+
+        if(dibujarPuerta()){
+            g.drawImage(puertita,Nivel.puerta.getPosY()*30,Nivel.puerta.getPosX()*30,null);
+        }
+
     }
+
+    public static boolean dibujarPuerta(){
+        int x = Nivel.puerta.getPosX();
+        int y = Nivel.puerta.getPosY();
+        if(Tablero.Mapa[x][y] == '-') return true;
+        else return false;
+    }
+
 
     public static boolean dibujarBomba(){
         if(Juego.list_bomba.isEmpty()) return false;

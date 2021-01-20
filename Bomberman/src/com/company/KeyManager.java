@@ -1,10 +1,7 @@
 package com.company;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.*;
 
 public class KeyManager implements KeyListener, ActionListener {
 
@@ -39,9 +36,18 @@ public class KeyManager implements KeyListener, ActionListener {
             Heroe.mover(3);
         }
 
-        if(keys[KeyEvent.VK_X]){
+        if(keys[KeyEvent.VK_X] || keys[KeyEvent.VK_SHIFT]){
             Heroe.ColocarBomba();
         }
+
+        if(keys[KeyEvent.VK_ENTER]){
+            //Pone el juego en pausa
+        }
+
+        if(keys[KeyEvent.VK_SPACE]){
+            //Detona la bomba que lleva mas tiempo
+        }
+
 
     }
 
@@ -60,4 +66,5 @@ public class KeyManager implements KeyListener, ActionListener {
     public void actionPerformed(ActionEvent e) {
 
     }
+
 }

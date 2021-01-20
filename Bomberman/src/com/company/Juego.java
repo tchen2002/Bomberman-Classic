@@ -18,6 +18,7 @@ public class Juego implements Runnable, ActionListener {
     private GamePanel gamePanel;
     private KeyManager keyManager;
     private Heroe heroe;
+    private Mouse mouse;
 
     private int CantVillano,Velocidad;
     public static int Largo,Ancho, ProbaLadrillo;
@@ -33,6 +34,10 @@ public class Juego implements Runnable, ActionListener {
         Tablero tablero = new Tablero(Largo,Ancho,ProbaLadrillo);
         Nivel nivel = new Nivel(1,CantVillano);
         keyManager = new KeyManager();
+        mouse = new Mouse();
+    }
+
+    private void addMouseListener(Mouse mouse) {
     }
 
     private void leerDatos(String path){
@@ -95,6 +100,10 @@ public class Juego implements Runnable, ActionListener {
         gamePanel = new GamePanel(Ancho*30,Largo*30);
         //gamePanel.getFrame().addKeyListener(keyManager);
         gamePanel.getFrame().addKeyListener(new KeyManager());
+        gamePanel.getFrame().addMouseListener(mouse);
+        gamePanel.getFrame().addMouseMotionListener(mouse);
+        gamePanel.getCanvas().addMouseListener(mouse);
+        gamePanel.getCanvas().addMouseMotionListener(mouse);
         personajeElement = new PersonajeElement();
         heroe = new Heroe(0,1,1,30,0,true,3,1,0);
     }
@@ -135,6 +144,8 @@ public class Juego implements Runnable, ActionListener {
     public KeyManager getKeyManager(){
         return keyManager;
     }
+
+    public Mouse getMouseManager(){  return mouse; }
 
     public synchronized void start(){
         if(running) return;

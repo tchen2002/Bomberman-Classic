@@ -23,6 +23,5 @@ public class Sonido{
                 AudioPlayer.player.stop(audioInputStream);
             }
         } ,1300);
-
     }
 }

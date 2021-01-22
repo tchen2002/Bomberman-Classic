@@ -11,13 +11,11 @@ import java.util.ArrayList;
 
 public class Juego implements Runnable, ActionListener {
 
-
     static ArrayList<Bomba> list_bomba = new ArrayList<Bomba>();
-    static ArrayList<Bomba> list_bomba_explosion = new ArrayList<Bomba>();
     private PersonajeElement personajeElement;
     private GamePanel gamePanel;
     private KeyManager keyManager;
-    private Heroe heroe;
+    public static Heroe heroe;
     private Mouse mouse;
 
     private int CantVillano,Velocidad;
@@ -32,7 +30,7 @@ public class Juego implements Runnable, ActionListener {
     public Juego(){
         leerDatos("Img/archiConf.txt");
         Tablero tablero = new Tablero(Largo,Ancho,ProbaLadrillo);
-        Nivel nivel = new Nivel(1,CantVillano);
+        Nivel nivel = new Nivel(11,CantVillano);
         keyManager = new KeyManager();
         mouse = new Mouse();
     }
@@ -92,6 +90,8 @@ public class Juego implements Runnable, ActionListener {
         gamePanel.dibujarMapa(g);
         heroe.render(g);
         Villano.DibujarVillanos(g);
+        Observer.VerificarColision();
+
         bs.show();
         g.dispose();
     }

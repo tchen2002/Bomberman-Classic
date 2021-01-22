@@ -14,43 +14,102 @@ import java.util.TimerTask;
 public class PersonajeElement {
 
     private static ArrayList<Integer> list_explosion = new ArrayList<Integer>();
+    private static ArrayList<Animacion> list_enemigos_animacion = new ArrayList<Animacion>();
     private static boolean estado_bombda;
     private BufferStrategy bs;
     private Graphics g;
-    private static  Animacion animacion_bomba,animacion_heroe,animacion_globo_rebotando;
+    private static  Animacion animacion_bomba,animacion_heroe, animacion_globo_rebotando;
+    static BufferedImage[] list_img_villanos = new BufferedImage[8];
 
-    public static BufferedImage personaje,villano1;
+    private static Animacion animacion_cel_rebotando,animacion_haki_rebotando;
+    private static Animacion animacion_espon_rebotando,animacion_fant_rebotando,animacion_mon_rebotando,animacion_mong_rebotando;
 
     private BufferedImage[] bomba_explosion, heroe_caminando,globo_rebotando;
+
+    private BufferedImage[] cel_rebotando,haki_rebotando,espon_rebotando,fant_rebotando,mon_rebotando,mong_rebotando;
 
     private int PosX,PosY;
 
     public PersonajeElement(int PosX, int PosY){
         this.PosX=PosX;
         this.PosY=PosY;
-
     }
 
     public PersonajeElement(){
-        personaje = loadImage("Img/pacmanDer.png");
-        villano1 = loadImage("Img/globo1.png");
+        CargarImagenesHeroe();
+        CargarImagenesEnemigos();
+        CargarImagenesBomba();
+    }
 
+    public void CargarImagenesHeroe(){
+        heroe_caminando = new BufferedImage[2];
+        heroe_caminando[0] = loadImage("Img/heroe1.png");
+        heroe_caminando[1] = loadImage("Img/heroe2.png");
+        animacion_heroe = new Animacion(500,heroe_caminando);
+    }
+
+    public void CargarImagenesBomba(){
         bomba_explosion = new BufferedImage[2];
         bomba_explosion[0] =loadImage("Img/expo1.png");
         bomba_explosion[1] =loadImage("Img/expo2.png");
         //bomba_explosion[2] =loadImage("Img/expo3.png");
         //bomba_explosion[3] =loadImage("Img/expo4.png");
         animacion_bomba = new Animacion(500,bomba_explosion);
+    }
 
-        heroe_caminando = new BufferedImage[2];
-        heroe_caminando[0] = loadImage("Img/heroe1.png");
-        heroe_caminando[1] = loadImage("Img/heroe2.png");
-        animacion_heroe = new Animacion(500,heroe_caminando);
+    public void CargarImagenesEnemigos(){
+        list_img_villanos[0] = loadImage("Img/globo1.png");
+        list_img_villanos[1] = loadImage("Img/cel1.png");
+        list_img_villanos[2] = loadImage("Img/haki1.png");
+        list_img_villanos[3] = loadImage("Img/espon1.png");
+        list_img_villanos[4] = loadImage("Img/fant1.png");
+        list_img_villanos[5] = loadImage("Img/mon1.png");
+        list_img_villanos[6] = loadImage("Img/monG1.png");
 
+        //ENEMIGOS
         globo_rebotando  = new BufferedImage[2];
         globo_rebotando[0] = loadImage("Img/globo1.png");
         globo_rebotando[1] = loadImage("Img/globo2.png");
         animacion_globo_rebotando = new Animacion(500,globo_rebotando);
+
+        cel_rebotando  = new BufferedImage[2];
+        cel_rebotando[0] = loadImage("Img/cel1.png");
+        cel_rebotando[1] = loadImage("Img/cel2.png");
+        animacion_cel_rebotando = new Animacion(500,cel_rebotando);
+
+        haki_rebotando  = new BufferedImage[2];
+        haki_rebotando[0] = loadImage("Img/haki1.png");
+        haki_rebotando[1] = loadImage("Img/haki2.png");
+        animacion_haki_rebotando = new Animacion(500,haki_rebotando);
+
+        espon_rebotando  = new BufferedImage[2];
+        espon_rebotando[0] = loadImage("Img/espon1.png");
+        espon_rebotando[1] = loadImage("Img/espon2.png");
+        animacion_espon_rebotando = new Animacion(500,espon_rebotando);
+
+        fant_rebotando  = new BufferedImage[2];
+        fant_rebotando[0] = loadImage("Img/fant1.png");
+        fant_rebotando[1] = loadImage("Img/fant2.png");
+        animacion_fant_rebotando = new Animacion(500,fant_rebotando);
+
+        mon_rebotando  = new BufferedImage[2];
+        mon_rebotando[0] = loadImage("Img/mon1.png");
+        mon_rebotando[1] = loadImage("Img/mon2.png");
+        animacion_mon_rebotando = new Animacion(500,mon_rebotando);
+
+        mong_rebotando  = new BufferedImage[3];
+        mong_rebotando[0] = loadImage("Img/monG1.png");
+        mong_rebotando[1] = loadImage("Img/monG2.png");
+        mong_rebotando[2] = loadImage("Img/monG3.png");
+        animacion_mong_rebotando = new Animacion(500,mong_rebotando);
+
+        list_enemigos_animacion.add(animacion_globo_rebotando);
+        list_enemigos_animacion.add(animacion_cel_rebotando);
+        list_enemigos_animacion.add(animacion_haki_rebotando);
+        list_enemigos_animacion.add(animacion_espon_rebotando);
+        list_enemigos_animacion.add(animacion_fant_rebotando);
+        list_enemigos_animacion.add(animacion_mon_rebotando);
+        list_enemigos_animacion.add(animacion_mong_rebotando);
     }
 
     public static void heroe_anima(){
@@ -58,10 +117,9 @@ public class PersonajeElement {
     }
 
 
-    public static void rebotar(Graphics g,int id,int x,int y){
-        
-        animacion_globo_rebotando.tick();
-        g.drawImage(animacion_globo_rebotando.getCurrentFrame(),x,y,null);
+    public static void rebotar(Graphics g,int id,int x,int y,int tipo){
+        list_enemigos_animacion.get(tipo).tick();
+        g.drawImage(list_enemigos_animacion.get(tipo).getCurrentFrame(),x,y,null);
         Nivel.list_villano.get(id).setCamino(true);
     }
 
@@ -72,17 +130,11 @@ public class PersonajeElement {
     public static void render(Graphics g,int PosX, int PosY){
         if(estado_bombda){
             explosion();
-            //PONGO 2 PARA PRUEBAS
-            //ArrayList<Bomba> lista = Tablero.explosion(list_explosion.get(0),list_explosion.get(1),);
             ArrayList<Bomba> lista = Tablero.explosion(list_explosion.get(0),list_explosion.get(1),Heroe.getCantCupon()+3);
-           /* for (int c=0;c<lista.size();c++) {
-                System.out.println("POSX"+lista.get(c).getPosX()+"POSY"+lista.get(c).getPosY());
-            }*/
+            Observer.VerificarExplosion(lista);
             for (int c=0;c<lista.size();c++) {
                 g.drawImage(animacion_bomba.getCurrentFrame(),lista.get(c).getPosY()*30,lista.get(c).getPosX()*30,null);
             }
-
-
         }
         Timer time = new Timer();
         time.schedule(new TimerTask() {
@@ -111,6 +163,7 @@ public class PersonajeElement {
                 list_explosion.add((Juego.list_bomba.get(0).getPosX()));
                 list_explosion.add((Juego.list_bomba.get(0).getPosY()));
                 Juego.list_bomba.remove(0);
+
                 try {
                     Sonido.ReproducirSonido("Img/boom.wav");
                 } catch (IOException e) {
@@ -123,11 +176,11 @@ public class PersonajeElement {
         } ,2000);
     }
 
-    public static void dibujar_globo(Graphics g,int id, int x,int y){
+    public static void dibujar_enemigo(Graphics g,int id, int tipo,int x,int y){
         if(Nivel.list_villano.get(id).getCamino()){
-            g.drawImage(villano1,x,y,null);
+            g.drawImage(list_img_villanos[tipo],x,y,null);
         }else{
-            rebotar(g,id,x,y);
+            rebotar(g,id,x,y,tipo);
         }
     }
 

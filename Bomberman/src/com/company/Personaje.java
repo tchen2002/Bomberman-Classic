@@ -4,10 +4,11 @@ import java.awt.*;
 
 public abstract class Personaje {
 
-    private int id,PosX,PosY,Velocidad,Direccion;
+    private int id,PosX,PosY,Direccion;
     private boolean Estado;
+    private double Velocidad;
 
-    public Personaje(int id,int PosX, int PosY, int Velocidad, int Direccion, boolean Estado) {
+    public Personaje(int id,int PosX, int PosY, double Velocidad, int Direccion, boolean Estado) {
         this.id=id;
         this.PosX = PosX;
         this.PosY = PosY;
@@ -47,11 +48,11 @@ public abstract class Personaje {
         PosY = posY;
     }
 
-    public int getVelocidad() {
+    public double getVelocidad() {
         return Velocidad;
     }
 
-    public void setVelocidad(int velocidad) {
+    public void setVelocidad(double velocidad) {
         Velocidad = velocidad;
     }
 

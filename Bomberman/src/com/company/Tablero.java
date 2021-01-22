@@ -14,7 +14,6 @@ public class Tablero {
         llenarMatriz();
     }
 
-
     public void llenarMatriz(){
         for (int i = 0; i < Largo; i++) {
             for (int j = 0; j < Ancho; j++) {
@@ -33,8 +32,6 @@ public class Tablero {
                 }
             }
         }
-
-
     }
 
     public boolean generarRandom(){
@@ -46,9 +43,17 @@ public class Tablero {
         else res=true;
         return res;
     }
+
     public static boolean tipoCuadrado(int i, int j){
         if(Mapa[i][j] == 'A' || Mapa[i][j] == 'L'){
             return false;
+        }
+        if(!Juego.list_bomba.isEmpty()){
+            for(int c=0;c<Juego.list_bomba.size();c++){
+                if(Juego.list_bomba.get(c).getPosX() == i && Juego.list_bomba.get(c).getPosY() == j){
+                    return false;
+                }
+            }
         }
         return true;
     }
@@ -66,18 +71,28 @@ public class Tablero {
             return 1;
         }
 
-        return 0;
+        if(!Juego.list_bomba.isEmpty()){
+            for(int c=0;c<Juego.list_bomba.size();c++){
+                if(Juego.list_bomba.get(c).getPosX() == i && Juego.list_bomba.get(c).getPosY() == j){
+                    return 1;
+                }
+            }
+        }
 
+        return 0;
     }
 
     public static ArrayList<Bomba> explosion(int i, int j,int largo){
         ArrayList<Bomba> list_pos = new ArrayList<Bomba>();
         list_pos.add(new Bomba(i,j));
-        System.out.println("HELLOPOSX"+list_pos.get(0).getPosX()+"POSY"+list_pos.get(0).getPosY());
         for (int cont = 1;cont<=largo;cont++) {
             if (Mapa[i + cont][j] != 'A') {
-                Mapa[i + cont][j] = '-';
                 list_pos.add(new Bomba(i + cont,j));
+                if(Mapa[i + cont][j] == 'L'){
+                    Mapa[i + cont][j] = '-';
+                    break;
+                }
+                Mapa[i + cont][j] = '-';
             }else{
                 break;
             }
@@ -85,8 +100,12 @@ public class Tablero {
 
         for (int cont = 1;cont<=largo;cont++) {
             if (Mapa[i-cont][j] != 'A'){
-                Mapa[i-cont][j]= '-';
                 list_pos.add(new Bomba(i - cont,j));
+                if( Mapa[i-cont][j] == 'L'){
+                    Mapa[i-cont][j] = '-';
+                    break;
+                }
+                Mapa[i - cont][j] = '-';
             }else{
                 break;
             }
@@ -94,8 +113,12 @@ public class Tablero {
 
         for (int cont = 1;cont<=largo;cont++) {
             if (Mapa[i][j+ cont] != 'A'){
-                Mapa[i][j+ cont]= '-';
                 list_pos.add(new Bomba(i,j+cont));
+                if( Mapa[i][j+ cont] == 'L'){
+                    Mapa[i][j+ cont] = '-';
+                    break;
+                }
+                Mapa[i][j+ cont]= '-';
             }else{
                 break;
             }
@@ -103,8 +126,12 @@ public class Tablero {
 
         for (int cont = 1;cont<=largo;cont++) {
             if (Mapa[i][j-cont] != 'A') {
-                Mapa[i][j-cont] = '-';
                 list_pos.add(new Bomba(i,j-cont));
+                if( Mapa[i][j-cont] == 'L'){
+                    Mapa[i][j-cont] = '-';
+                    break;
+                }
+                Mapa[i][j-cont] = '-';
             }else{
                 break;
             }

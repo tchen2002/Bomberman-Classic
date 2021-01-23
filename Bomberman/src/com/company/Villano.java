@@ -48,10 +48,28 @@ public class Villano extends Personaje{
 
     @Override
     public void render(Graphics g) {
-
     }
-    public static void DibujarVillanos(Graphics g){
 
+    public static void ConvertirMonedasG(){
+        int largo=Nivel.list_villano.size();
+        int cont=0;
+        for(int i=largo;i<largo+Juego.CantVillano;i++){
+            Nivel.list_villano.add(new Villano(i,Nivel.list_villano.get(cont).getPosX(),
+                    Nivel.list_villano.get(cont).getPosY(),Nivel.list_villano.get(cont).getDireccion(),
+                    6,true,
+                    Nivel.list_villano.get(cont).getCamino()));
+            cont++;
+        }
+        for(int i=0;i<Nivel.list_villano.size();i++){
+            if(Nivel.list_villano.get(i).getEstado()){
+                Nivel.list_villano.get(i).setTipo(6);
+                //g.drawImage(list_img_villanos[6],Nivel.list_villano.get(i).getPosY()*30,Nivel.list_villano.get(i).getPosX()*30,null);
+            }
+
+        }
+    }
+
+    public static void DibujarVillanos(Graphics g){
         for(int i=0;i<Nivel.list_villano.size();i++){
             if(Nivel.list_villano.get(i).getEstado()){
                 PersonajeElement.dibujar_enemigo(g,Nivel.list_villano.get(i).getId(),Nivel.list_villano.get(i).getTipo(),Nivel.list_villano.get(i).getPosY()*30 , Nivel.list_villano.get(i).getPosX()*30);

@@ -29,7 +29,7 @@ public class Juego implements Runnable, ActionListener {
 
     private int Velocidad;
     public static int Largo,Ancho, ProbaLadrillo;
-    private static int reloj = 635;
+    private static int reloj = 20;
 
     public static boolean running = false;
     private Thread thread;
@@ -42,7 +42,7 @@ public class Juego implements Runnable, ActionListener {
         tablero = new Tablero(Largo,Ancho,ProbaLadrillo);
         tablero.llenarMatriz();
         observer = new Observer(0);
-        nivel = new Nivel(2,CantVillano);
+        nivel = new Nivel(1,CantVillano);
         nivel.iniciar();
         keyManager = new KeyManager();
         mouse = new Mouse();
@@ -53,7 +53,7 @@ public class Juego implements Runnable, ActionListener {
         nivel.iniciar();
         Heroe.SetPosX(1);
         Heroe.SetPosY(1);
-        SetTiempo(635);
+        SetTiempo(20);
     }
 
     private void addMouseListener(Mouse mouse) {
@@ -105,6 +105,17 @@ public class Juego implements Runnable, ActionListener {
             } ,2000);
         }*/
 
+        if (getTiempo() == 0){
+            Villano.ConvertirMonedasG();
+            Timer time = new Timer();
+            time.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    reiniciar();
+                }
+            } ,5000);
+        }
+
         bs.show();
         g.dispose();
     }
@@ -120,6 +131,7 @@ public class Juego implements Runnable, ActionListener {
         personajeElement = new PersonajeElement();
         heroe = new Heroe(0,1,1,30,0,true,3,1,0);
     }
+
 
     @Override
     public void run() {
@@ -143,10 +155,6 @@ public class Juego implements Runnable, ActionListener {
 
             if(delta >= 1){
                 setTiempo();
-                if (getTiempo() <= 0){
-                    System.exit( 0 );
-                    break;
-                }
                 //System.out.println(getTiempo());
                 tick();
                 render();

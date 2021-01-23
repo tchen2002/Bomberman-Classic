@@ -8,12 +8,14 @@ import java.util.TimerTask;
 
 public class Observer {
     private static int Puntos_globales;
+    private static int pts=0;
 
     public Observer(int puntos_globales) {
         Puntos_globales = puntos_globales;
     }
 
     public static boolean PasarSiguienteNivel(){
+        SumarPuntajes();
         int x = Nivel.puerta.getPosX();
         int y = Nivel.puerta.getPosY();
         boolean res=true;
@@ -29,7 +31,13 @@ public class Observer {
         }
 
         return res;
-        //VERIFICAR PUERTA //ENTRAR A LA PUERTA
+    }
+
+    public static void SumarPuntajes(){
+        if(pts>=100000){
+            Heroe.setVida(Heroe.getVida()+1);
+            pts-=100000;
+        }
     }
 
     public static void VerificarColision(){
@@ -57,16 +65,21 @@ public class Observer {
 
     public static void VerificarExplosionVillano(ArrayList<Bomba> lista){
         ArrayList<Integer> puntos = new ArrayList<Integer>();
+        ArrayList<Integer> m_villanos = new ArrayList<Integer>();
         for(int i=0;i<lista.size();i++){
             for(int j=0; j<Nivel.list_villano.size();j++){
                 if(lista.get(i).getPosX() == Nivel.list_villano.get(j).getPosX() && lista.get(i).getPosY() == Nivel.list_villano.get(j).getPosY()){
                     puntos.add(Nivel.list_villano_inicial.get(Nivel.list_villano.get(j).getTipo()).getPunt());
+                    m_villanos.add(lista.get(i).getPosX());
+                    m_villanos.add(lista.get(i).getPosY());
                     Nivel.list_villano.get(j).setEstado(false);
                 }
             }
         }
-        setPuntos_globales(getPuntos_globales()+SumarPuntosVillanos(puntos));
-        System.out.println("HELOOOOOOOOOOOOOOOOOOOOO"+getPuntos_globales());
+        int Puntos_villanos = SumarPuntosVillanos(puntos);
+        setPuntos_globales(getPuntos_globales()+Puntos_villanos);
+        pts+=Puntos_villanos;
+        PersonajeElement.dibujar_villanos_muertos(m_villanos);
     }
 
     public static void VerificarExplosionPuerta(ArrayList<Bomba> lista){

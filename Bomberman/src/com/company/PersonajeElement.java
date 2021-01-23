@@ -13,6 +13,8 @@ import java.util.TimerTask;
 
 public class PersonajeElement {
 
+    private static ArrayList<Integer> list_muertes_villanos = new ArrayList<Integer>();
+    private static boolean estado_muertos = false;
     private static ArrayList<Integer> list_explosion = new ArrayList<Integer>();
     private static ArrayList<Animacion> list_enemigos_animacion = new ArrayList<Animacion>();
     private static boolean estado_bombda;
@@ -21,12 +23,12 @@ public class PersonajeElement {
     private static  Animacion animacion_bomba,animacion_heroe, animacion_globo_rebotando;
     static BufferedImage[] list_img_villanos = new BufferedImage[8];
 
-    private static Animacion animacion_gameover;
+    private static Animacion animacion_muerte_villano;
 
     private static Animacion animacion_cel_rebotando,animacion_haki_rebotando;
     private static Animacion animacion_espon_rebotando,animacion_fant_rebotando,animacion_mon_rebotando,animacion_mong_rebotando;
 
-    private BufferedImage[] gameover;
+    private BufferedImage[] muerte_villano;
 
     private BufferedImage[] bomba_explosion, heroe_caminando,globo_rebotando;
 
@@ -43,16 +45,14 @@ public class PersonajeElement {
         CargarImagenesHeroe();
         CargarImagenesEnemigos();
         CargarImagenesBomba();
-        CargarImagenesGameOver();
+        CargarImagenesMuerteVillano();
     }
 
-    public void CargarImagenesGameOver(){
-        gameover = new BufferedImage[4];
-        gameover[0] = loadImage("Img/gameover1.png");
-        gameover[1] = loadImage("Img/gameover2.png");
-        gameover[0] = loadImage("Img/gameover3.png");
-        gameover[1] = loadImage("Img/gameover4.png");
-        animacion_gameover = new Animacion(500,gameover);
+    public void CargarImagenesMuerteVillano(){
+        muerte_villano = new BufferedImage[2];
+        muerte_villano[0] = loadImage("Img/muerte1.png");
+        muerte_villano[1] = loadImage("Img/muerte2.png");
+        animacion_muerte_villano = new Animacion(500,muerte_villano);
     }
 
     public void CargarImagenesHeroe(){
@@ -160,6 +160,22 @@ public class PersonajeElement {
             }
         } ,2000);
 
+        if(estado_muertos){
+            for(int i=0;i<list_muertes_villanos.size();i+=2){
+                animacion_muerte_villano.tick();
+                g.drawImage(animacion_muerte_villano.getCurrentFrame(),list_muertes_villanos.get(i+1)*30,list_muertes_villanos.get(i)*30,null);
+            }
+        }
+
+        Timer time1 = new Timer();
+        time1.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                estado_muertos=false;
+
+            }
+        } ,3000);
+
     }
 
     public static void dibujar_heroe(Graphics g,int PosX, int PosY){
@@ -168,9 +184,14 @@ public class PersonajeElement {
         render(g,60,60);
     }
 
-    public static void dibujar_gameover(Graphics g){
-        animacion_gameover.tick();
-        g.drawImage(animacion_gameover.getCurrentFrame(),100,100,null);
+    public static boolean dibujar_villanos_muertos(ArrayList<Integer> lista){
+        list_muertes_villanos.clear();
+        if(!lista.isEmpty()){
+            estado_muertos=true;
+            list_muertes_villanos = lista;
+            return true;
+        }
+        return false;
     }
 
     public static void dibujarExplosion(int x,int y){

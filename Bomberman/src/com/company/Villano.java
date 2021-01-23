@@ -1,11 +1,9 @@
 package com.company;
 
 import java.awt.*;
-import java.util.ArrayList;
 
 public class Villano extends Personaje{
 
-    private static com.company.Nivel Nivel;
     private int id,PosX,PosY,Direccion,Tipo;
     private boolean Estado,Camino;
 
@@ -43,8 +41,6 @@ public class Villano extends Personaje{
     LV4 4
      */
 
-
-
     @Override
     public void tick(int dir) {
 
@@ -56,7 +52,7 @@ public class Villano extends Personaje{
     }
     public static void DibujarVillanos(Graphics g){
 
-        for(int i=0;i<10;i++){
+        for(int i=0;i<Nivel.list_villano.size();i++){
             if(Nivel.list_villano.get(i).getEstado()){
                 PersonajeElement.dibujar_enemigo(g,Nivel.list_villano.get(i).getId(),Nivel.list_villano.get(i).getTipo(),Nivel.list_villano.get(i).getPosY()*30 , Nivel.list_villano.get(i).getPosX()*30);
                 InteligenciaArtificial.InteliArtificial(Nivel.list_villano.get(i).getId());

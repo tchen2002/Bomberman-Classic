@@ -11,7 +11,7 @@ public class Tablero {
         this.Ancho = Ancho;
         this.ProbaLadrillo = ProbaLadrillo;
         this.Mapa = new char[Largo][Ancho];
-        llenarMatriz();
+        //llenarMatriz();
     }
 
     public void llenarMatriz(){

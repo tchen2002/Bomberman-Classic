@@ -21,8 +21,12 @@ public class PersonajeElement {
     private static  Animacion animacion_bomba,animacion_heroe, animacion_globo_rebotando;
     static BufferedImage[] list_img_villanos = new BufferedImage[8];
 
+    private static Animacion animacion_gameover;
+
     private static Animacion animacion_cel_rebotando,animacion_haki_rebotando;
     private static Animacion animacion_espon_rebotando,animacion_fant_rebotando,animacion_mon_rebotando,animacion_mong_rebotando;
+
+    private BufferedImage[] gameover;
 
     private BufferedImage[] bomba_explosion, heroe_caminando,globo_rebotando;
 
@@ -39,6 +43,16 @@ public class PersonajeElement {
         CargarImagenesHeroe();
         CargarImagenesEnemigos();
         CargarImagenesBomba();
+        CargarImagenesGameOver();
+    }
+
+    public void CargarImagenesGameOver(){
+        gameover = new BufferedImage[4];
+        gameover[0] = loadImage("Img/gameover1.png");
+        gameover[1] = loadImage("Img/gameover2.png");
+        gameover[0] = loadImage("Img/gameover3.png");
+        gameover[1] = loadImage("Img/gameover4.png");
+        animacion_gameover = new Animacion(500,gameover);
     }
 
     public void CargarImagenesHeroe(){
@@ -132,6 +146,7 @@ public class PersonajeElement {
             explosion();
             ArrayList<Bomba> lista = Tablero.explosion(list_explosion.get(0),list_explosion.get(1),Heroe.getCantCupon()+3);
             Observer.VerificarExplosion(lista);
+            Observer.VerificarExplosionPuerta(lista);
             for (int c=0;c<lista.size();c++) {
                 g.drawImage(animacion_bomba.getCurrentFrame(),lista.get(c).getPosY()*30,lista.get(c).getPosX()*30,null);
             }
@@ -153,6 +168,11 @@ public class PersonajeElement {
         render(g,60,60);
     }
 
+    public static void dibujar_gameover(Graphics g){
+        animacion_gameover.tick();
+        g.drawImage(animacion_gameover.getCurrentFrame(),100,100,null);
+    }
+
     public static void dibujarExplosion(int x,int y){
         Timer time = new Timer();
         time.schedule(new TimerTask() {
@@ -163,7 +183,7 @@ public class PersonajeElement {
                 list_explosion.add((Juego.list_bomba.get(0).getPosX()));
                 list_explosion.add((Juego.list_bomba.get(0).getPosY()));
                 Juego.list_bomba.remove(0);
-
+/*
                 try {
                     Sonido.ReproducirSonido("Img/boom.wav");
                 } catch (IOException e) {
@@ -171,7 +191,7 @@ public class PersonajeElement {
                 } catch (UnsupportedAudioFileException e) {
                     e.printStackTrace();
                 }
-
+*/
             }
         } ,2000);
     }

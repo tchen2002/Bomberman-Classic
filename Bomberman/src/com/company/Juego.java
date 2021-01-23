@@ -1,5 +1,6 @@
 package com.company;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,6 +9,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Juego implements Runnable, ActionListener {
 
@@ -18,10 +21,17 @@ public class Juego implements Runnable, ActionListener {
     public static Heroe heroe;
     private Mouse mouse;
 
-    private int CantVillano,Velocidad;
-    public static int Largo,Ancho, ProbaLadrillo;
+    public static Tablero tablero;
+    public static Nivel nivel;
+    public static Observer observer;
 
-    private boolean running = false;
+    public static int CantVillano;
+
+    private int Velocidad;
+    public static int Largo,Ancho, ProbaLadrillo;
+    private static int reloj = 635;
+
+    public static boolean running = false;
     private Thread thread;
 
     private BufferStrategy bs;
@@ -29,10 +39,21 @@ public class Juego implements Runnable, ActionListener {
 
     public Juego(){
         leerDatos("Img/archiConf.txt");
-        Tablero tablero = new Tablero(Largo,Ancho,ProbaLadrillo);
-        Nivel nivel = new Nivel(11,CantVillano);
+        tablero = new Tablero(Largo,Ancho,ProbaLadrillo);
+        tablero.llenarMatriz();
+        observer = new Observer(0);
+        nivel = new Nivel(2,CantVillano);
+        nivel.iniciar();
         keyManager = new KeyManager();
         mouse = new Mouse();
+    }
+
+    public static void reiniciar(){
+        tablero.llenarMatriz();
+        nivel.iniciar();
+        Heroe.SetPosX(1);
+        Heroe.SetPosY(1);
+        SetTiempo(635);
     }
 
     private void addMouseListener(Mouse mouse) {
@@ -46,31 +67,6 @@ public class Juego implements Runnable, ActionListener {
         ProbaLadrillo = parseInt(tokens[2]);
         CantVillano = parseInt(tokens[3]);
         Velocidad = parseInt(tokens[4]);
-    }
-
-    public static String loadFileAsString(String path){
-        StringBuilder builder = new StringBuilder();
-        try{
-            BufferedReader br = new BufferedReader(new FileReader(path));
-            String line;
-            while((line = br.readLine()) != null)
-                builder.append(line + "\n");
-
-            br.close();
-        }catch(IOException e){
-            e.printStackTrace();
-        }
-
-        return builder.toString();
-    }
-
-    public static int parseInt(String number){
-        try{
-            return Integer.parseInt(number);
-        }catch(NumberFormatException e){
-            e.printStackTrace();
-            return 0;
-        }
     }
 
     private void tick(){
@@ -91,6 +87,23 @@ public class Juego implements Runnable, ActionListener {
         heroe.render(g);
         Villano.DibujarVillanos(g);
         Observer.VerificarColision();
+        if(Observer.PasarSiguienteNivel()){
+            nivel.setNivel(nivel.getNivel()+1);
+            Heroe.setVida(Heroe.getVida()+1);
+            reiniciar();
+        }
+        /*
+        if(Observer.GameOver()){
+            GamePanel.dibujarGameover(g);
+
+            Timer time = new Timer();
+            time.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    System.exit( 0 );
+                }
+            } ,2000);
+        }*/
 
         bs.show();
         g.dispose();
@@ -120,17 +133,26 @@ public class Juego implements Runnable, ActionListener {
         long timer = 0;
         int ticks = 0;
 
+
         while(running){
+
             now = System.nanoTime();
             delta += (now - lastTime) / timePerTick;
             timer += now - lastTime;
             lastTime = now;
 
             if(delta >= 1){
+                setTiempo();
+                if (getTiempo() <= 0){
+                    System.exit( 0 );
+                    break;
+                }
+                //System.out.println(getTiempo());
                 tick();
                 render();
                 ticks++;
                 delta--;
+
             }
 
             if(timer >= 1000000000){
@@ -138,6 +160,7 @@ public class Juego implements Runnable, ActionListener {
                 timer = 0;
             }
         }
+
         stop();
     }
 
@@ -168,5 +191,41 @@ public class Juego implements Runnable, ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 
+    }
+
+    public static String loadFileAsString(String path){
+        StringBuilder builder = new StringBuilder();
+        try{
+            BufferedReader br = new BufferedReader(new FileReader(path));
+            String line;
+            while((line = br.readLine()) != null)
+                builder.append(line + "\n");
+
+            br.close();
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+
+        return builder.toString();
+    }
+
+    public static int parseInt(String number){
+        try{
+            return Integer.parseInt(number);
+        }catch(NumberFormatException e){
+            e.printStackTrace();
+            return 0;
+        }
+    }
+    public static int getTiempo(){
+        return reloj;
+    }
+
+    public static int setTiempo(){
+        return reloj--;
+    }
+
+    public static void SetTiempo(int t){
+        reloj = t;
     }
 }

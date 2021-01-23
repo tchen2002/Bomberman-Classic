@@ -8,13 +8,14 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import javax.swing.JFrame;
+import javax.swing.*;
 
 public class GamePanel {
 
     private BufferStrategy bs;
     private JFrame frame;
     private Canvas canvas;
+    private JLabel timeLabel,scoreLabel,lifeLabel;
     public static BufferedImage acero,ladrillo,sacate,bomba,puertita,cc;
     final BufferedImage[]  list_imag_cupones = new BufferedImage[8];
     private int LargoTablero,AnchoTablero;
@@ -60,8 +61,31 @@ public class GamePanel {
         canvas.setMinimumSize(new Dimension(AnchoTablero, LargoTablero));
         canvas.setFocusable(false);
 
+        timeLabel = new JLabel("Time: " + Juego.getTiempo());
+        timeLabel.setBounds(0,0,100,20);
+        timeLabel.setOpaque(true);
+        timeLabel.setForeground(Color.WHITE);
+        timeLabel.setBackground(Color.BLACK);
+
+        lifeLabel = new JLabel("Vidas: " + Heroe.getVida());
+        lifeLabel.setBounds(100,0,80,20);
+        lifeLabel.setOpaque(true);
+        lifeLabel.setForeground(Color.WHITE);
+        lifeLabel.setBackground(Color.BLACK);
+
+        //Observer.getPuntos_globales()
+        scoreLabel = new JLabel("Puntaje: " +  Heroe.getVida());
+        scoreLabel.setBounds(180,0,200,20);
+        scoreLabel.setOpaque(true);
+        scoreLabel.setForeground(Color.WHITE);
+        scoreLabel.setBackground(Color.BLACK);
+
+        frame.add(timeLabel);
+        frame.add(lifeLabel);
+        frame.add(scoreLabel);
         frame.add(canvas);
         frame.pack();
+
     }
 
     public static BufferedImage loadImage(String path){
@@ -76,6 +100,9 @@ public class GamePanel {
     }
 
     public void dibujarMapa(Graphics g){
+        timeLabel.setText("Tiempo: " + Juego.getTiempo());
+        lifeLabel.setText("Vidas: " + Heroe.getVida());
+        scoreLabel.setText("Puntajes: " + Observer.getPuntos_globales());
 
         for(int x = 0;x <(AnchoTablero/30);x++){
             for(int y = 0;y< (LargoTablero/30);y++){
@@ -103,6 +130,18 @@ public class GamePanel {
             g.drawImage(list_imag_cupones[Nivel.cupon.getCupon()],Nivel.cupon.getPosY()*30, Nivel.cupon.getPosX()*30, null);
         }
 
+    }
+
+    public static void dibujarGameover(Graphics g) {
+        //Para poner fondo en negro,con un rectangulo
+        g.setColor(Color.black);
+        g.fillRect(0, 0, 1500, 1000);
+
+        //Mostrar letras Game over en pantalla
+        Font font = new Font("Arial", Font.PLAIN, 20 * 3);
+        g.setFont(font);
+        g.setColor(Color.white);
+        g.drawString("Game Over!",400,300);
     }
 
     public static boolean dibujarPuerta(){

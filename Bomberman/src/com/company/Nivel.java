@@ -1,7 +1,5 @@
 package com.company;
 
-import sun.awt.X11.XSystemTrayPeer;
-
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -11,19 +9,28 @@ public class Nivel {
     public static ArrayList<CuponDorado> list_cupon = new ArrayList<CuponDorado>();
     private static final double euler = 2.71828;
     public static ArrayList<Villano> list_villano = new ArrayList<Villano>();
-    private int nivel,cantVillano;
+    public static ArrayList<Villano> list_villano_copia = new ArrayList<Villano>();
+    public static int Nivel_, CantVillano;
     private Villano villano;
     public static Puerta puerta;
     public static CuponDorado cupon;
 
     public Nivel(int nivel,int cantVillano){
-        this.nivel = nivel;
-        this.cantVillano=cantVillano;
+        Nivel_ = nivel;
+        CantVillano=cantVillano;
         VillanoDefault();
         llenarArregloCupon();
-        ENEMIGOS(nivel);
+    }
+
+    public void iniciar(){
+        list_villano.clear();
+        list_villano_copia.clear();
+        ENEMIGOS(getNivel());
+        list_villano_copia = list_villano;
         generarPuerta();
-        generarCupon(nivel);
+        generarCupon(getNivel());
+        System.out.println("NIVEL");
+        System.out.println(getNivel());
         System.out.println("Puerta");
         System.out.println(puerta.getPosX());
         System.out.println(puerta.getPosY());
@@ -33,6 +40,8 @@ public class Nivel {
     }
 
     public void ENEMIGOS(int n){
+        System.out.println("N");
+        System.out.println(n);
         int x,y;
         ArrayList<Double> rango = new ArrayList<Double>();
         rango =  CalcularRango(n);
@@ -44,7 +53,10 @@ public class Nivel {
                 int cont =0;
                 for(int j=0;j<rango.size();j++){
                     double proba = GenerarRandomDouble();
-                    if(proba<rango.get(j)){
+                    if(rango.get(j)==1.00){
+                        cont =6;
+                        break;
+                    }else if(proba<rango.get(j)){
                         break;
                     }else{
                         cont++;
@@ -53,6 +65,7 @@ public class Nivel {
                 llenarArreglo(i,Dir,cont);
             }
         }
+
     }
 
     public Double poisson(int lambda, int k){
@@ -66,7 +79,11 @@ public class Nivel {
         ArrayList<Double> rango = new ArrayList<Double>();
         int k=calNumVillanoPosible(n);
         for(int i=1;i<=k;i++){
-            rango.add(poisson(n,i));
+            if(i>getCantVillano()){
+                rango.add(1.00);
+            }else{
+                rango.add(poisson(n,i));
+            }
         }
         return rango;
     }
@@ -184,19 +201,19 @@ public class Nivel {
         list_villano_inicial.add(new Villano(6,"MonG",14,3/2,true,1,4000));
     }
 
-    public int getNivel() {
-        return nivel;
+    public static int getNivel() {
+        return Nivel_;
     }
 
-    public void setNivel(int nivel) {
-        this.nivel = nivel;
+    public static void setNivel(int nivel) {
+        Nivel_ = nivel;
     }
 
     public int getCantVillano() {
-        return cantVillano;
+        return CantVillano;
     }
 
     public void setCantVillano(int cantVillano) {
-        this.cantVillano = cantVillano;
+        this.CantVillano = cantVillano;
     }
 }

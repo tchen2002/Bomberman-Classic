@@ -9,17 +9,22 @@ public class Heroe extends Personaje {
     private static int colision;
 
 
-    public Heroe(int id,int PosX, int PosY, double Velocidad, int Direccion, boolean Estado,int Vida,int CantBoomba,int CantCupon) {
+    public Heroe(int id,int PosX, int PosY, double Velocidad, int Direccion, boolean Estado,int Vida,int cantBomba,int CantCupon) {
         this.Vida = Vida;
-        this.CantBomba = CantBomba;
+        this.CantBomba = cantBomba;
         this.CantCupon = CantCupon;
     }
 
     public static void ColocarBomba(){
         int X= PosX;
         int Y= PosY;
-        Bomba bomba = new Bomba(X,Y,true);
-        Juego.list_bomba.add(bomba);
+        if(Nivel.list_cupon.get(2).getActivo()){
+            Bomba bomba = new Bomba(X,Y,false);
+            Juego.list_bomba.add(bomba);
+        }else{
+            Bomba bomba = new Bomba(X,Y,true);
+            Juego.list_bomba.add(bomba);
+        }
         Bomba.render();
     }
 
@@ -31,6 +36,28 @@ public class Heroe extends Personaje {
             if (dir == 2) PosY -= 1;
             if (dir == 3) PosY += 1;
         }
+    }
+
+    public static void EncontrarCupon(){
+        int x = Nivel.cupon.getPosX();
+        int y = Nivel.cupon.getPosY();
+        if(Tablero.Mapa[x][y] == '-' && Heroe.GetPosX()==x && Heroe.GetPosY()==y && !Nivel.cupon.getEstado()){
+            if(!Nivel.cupon.getEstado()){
+                Juego.heroe.setCantCupon((Juego.heroe.getCantCupon())+1);
+                Nivel.cupon.setEstado(true);
+                Nivel.list_cupon.get(Nivel.cupon.getCupon()).setActivo(true);
+                CuponDorado.ActivarPoder(Nivel.cupon.getCupon());
+            }
+        }
+    }
+
+    public static boolean EncontrarPuerta(){
+        int x = Nivel.puerta.getPosX();
+        int y = Nivel.puerta.getPosY();
+        if(Tablero.Mapa[x][y] == '-' && Heroe.GetPosX()==x && Heroe.GetPosY()==y){
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -54,11 +81,11 @@ public class Heroe extends Personaje {
         Vida = vida;
     }
 
-    public int getCantBomba() {
+    public static int getCantBomba() {
         return CantBomba;
     }
 
-    public void setCantBomba(int cantBomba) {
+    public static void setCantBomba(int cantBomba) {
         CantBomba = cantBomba;
     }
 

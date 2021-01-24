@@ -17,7 +17,7 @@ public class PersonajeElement {
     private static boolean estado_muertos = false;
     private static ArrayList<Integer> list_explosion = new ArrayList<Integer>();
     private static ArrayList<Animacion> list_enemigos_animacion = new ArrayList<Animacion>();
-    private static boolean estado_bombda;
+    private static boolean estado_bomba;
     private BufferStrategy bs;
     private Graphics g;
     private static  Animacion animacion_bomba,animacion_heroe, animacion_globo_rebotando;
@@ -141,24 +141,27 @@ public class PersonajeElement {
         animacion_bomba.tick();
     }
 
-    public static void render(Graphics g,int PosX, int PosY){
-        if(estado_bombda){
-            explosion();
-            ArrayList<Bomba> lista = Tablero.explosion(list_explosion.get(0),list_explosion.get(1),Heroe.getCantCupon()+3);
-            Observer.VerificarExplosion(lista);
-            Observer.VerificarExplosionPuerta(lista);
-            for (int c=0;c<lista.size();c++) {
-                g.drawImage(animacion_bomba.getCurrentFrame(),lista.get(c).getPosY()*30,lista.get(c).getPosX()*30,null);
-            }
-        }
-        Timer time = new Timer();
-        time.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                estado_bombda=false;
+    public static void render(Graphics g){
+                if(estado_bomba){
+                    explosion();
+                    ArrayList<Bomba> lista = Tablero.explosion(list_explosion.get(0),list_explosion.get(1),Heroe.getCantCupon()+1);
+                    Observer.VerificarExplosion(lista);
+                    Observer.VerificarExplosionPuerta(lista);
+                    Observer.VerificarExplosionCupon(lista);
+                    for (int c=0;c<lista.size();c++) {
+                        g.drawImage(animacion_bomba.getCurrentFrame(),lista.get(c).getPosY()*30,lista.get(c).getPosX()*30,null);
+                    }
 
-            }
-        } ,2000);
+                }
+                Timer time = new Timer();
+                time.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        estado_bomba=false;
+                    }
+                } ,2000);
+
+
 
         if(estado_muertos){
             for(int i=0;i<list_muertes_villanos.size();i+=2){
@@ -181,7 +184,7 @@ public class PersonajeElement {
     public static void dibujar_heroe(Graphics g,int PosX, int PosY){
         heroe_anima();
         g.drawImage(animacion_heroe.getCurrentFrame(),PosY*30,PosX*30,null);
-        render(g,60,60);
+        render(g);
     }
 
     public static boolean dibujar_villanos_muertos(ArrayList<Integer> lista){
@@ -194,16 +197,18 @@ public class PersonajeElement {
         return false;
     }
 
-    public static void dibujarExplosion(int x,int y){
-        Timer time = new Timer();
-        time.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                estado_bombda=true;
-                list_explosion.clear();
-                list_explosion.add((Juego.list_bomba.get(0).getPosX()));
-                list_explosion.add((Juego.list_bomba.get(0).getPosY()));
-                Juego.list_bomba.remove(0);
+    public static void dibujarExplosion(){
+        if(!Juego.list_bomba.isEmpty() && Juego.list_bomba.get(0).getEstado()){
+            Timer time = new Timer();
+            time.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    estado_bomba=true;
+                    list_explosion.clear();
+                    list_explosion.add((Juego.list_bomba.get(0).getPosX()));
+                    list_explosion.add((Juego.list_bomba.get(0).getPosY()));
+                    Juego.list_bomba.remove(0);
+                    Heroe.setCantBomba(Heroe.getCantBomba()+1);
 /*
                 try {
                     Sonido.ReproducirSonido("Img/boom.wav");
@@ -213,8 +218,9 @@ public class PersonajeElement {
                     e.printStackTrace();
                 }
 */
-            }
-        } ,2000);
+                }
+            } ,2000);
+        }
     }
 
     public static void dibujar_enemigo(Graphics g,int id, int tipo,int x,int y){

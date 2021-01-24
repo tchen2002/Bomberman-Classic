@@ -5,6 +5,7 @@ import java.util.*;
 public class Tablero {
     public static char[][] Mapa;
     int Largo, Ancho,ProbaLadrillo;
+    public static boolean estado_cupon=false;
 
     public Tablero(int Largo,int Ancho,int ProbaLadrillo){
         this.Largo = Largo;
@@ -68,17 +69,21 @@ public class Tablero {
         if (dir == 3) {  j += 1;  }
 
         if(Mapa[i][j] == 'A' || Mapa[i][j] == 'L'){
+            if((CuponDorado.AtraviesaMuro() && Mapa[i][j] == 'L')){
+               return 0;
+            }
             return 1;
         }
 
-        if(!Juego.list_bomba.isEmpty()){
-            for(int c=0;c<Juego.list_bomba.size();c++){
-                if(Juego.list_bomba.get(c).getPosX() == i && Juego.list_bomba.get(c).getPosY() == j){
-                    return 1;
+        if(!CuponDorado.AtraviesaBomba()){
+            if(!Juego.list_bomba.isEmpty()){
+                for(int c=0;c<Juego.list_bomba.size();c++){
+                    if(Juego.list_bomba.get(c).getPosX() == i && Juego.list_bomba.get(c).getPosY() == j){
+                        return 1;
+                    }
                 }
             }
         }
-
         return 0;
     }
 
@@ -134,6 +139,20 @@ public class Tablero {
                 Mapa[i][j-cont] = '-';
             }else{
                 break;
+            }
+        }
+
+        for(int f=0;f<list_pos.size();f++){
+            int x=Nivel.cupon.getPosX();
+            int y=Nivel.cupon.getPosY();
+            if(list_pos.get(f).getPosX() == x && list_pos.get(f).getPosY()==y && !Nivel.cupon.getEstado()){
+                Timer time = new Timer();
+                time.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        estado_cupon=true;
+                    }
+                } ,4000);
             }
         }
         return(list_pos);

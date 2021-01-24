@@ -17,9 +17,17 @@ public class Mouse implements MouseListener, MouseMotionListener {
     @Override
     public void mousePressed(MouseEvent e) {
         if(e.getButton() == MouseEvent.BUTTON1) {
-            Heroe.ColocarBomba();
+            if(Heroe.getCantBomba()>0){
+                Heroe.ColocarBomba();
+                Heroe.setCantBomba(Heroe.getCantBomba()-1);
+            }
         }else if(e.getButton() == MouseEvent.BUTTON3) {
             System.out.println("DERECHA");
+            if(Nivel.list_cupon.get(2).getActivo()){
+                if(!Juego.list_bomba.isEmpty()){
+                    CuponDorado.Detonador();
+                }
+            }
             //Detona la bomba que lleva mas tiempo
         }
     }

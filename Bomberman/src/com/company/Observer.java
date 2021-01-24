@@ -16,20 +16,15 @@ public class Observer {
 
     public static boolean PasarSiguienteNivel(){
         SumarPuntajes();
-        int x = Nivel.puerta.getPosX();
-        int y = Nivel.puerta.getPosY();
-        boolean res=true;
+        boolean res=false;
         for(int i=0;i<Nivel.list_villano.size();i++){
               if(Nivel.list_villano.get(i).getEstado()){
                   return false;
               }
         }
-        if(Tablero.Mapa[x][y] == '-' && Heroe.GetPosX()==x && Heroe.GetPosY()==y){
+        if(Heroe.EncontrarPuerta()){
             res=true;
-        }else{
-            res=false;
         }
-
         return res;
     }
 
@@ -44,21 +39,31 @@ public class Observer {
         for(int i=0;i<Nivel.list_villano.size();i++){
             if(Heroe.GetPosX() ==Nivel.list_villano.get(i).getPosX() &&  Heroe.GetPosY() ==Nivel.list_villano.get(i).getPosY()){
                 Heroe.setVida(Heroe.getVida()-1);
-               // Juego.reiniciar();
+                //Juego.morir();
             }
         }
     }
 
     public static void VerificarExplosion(ArrayList<Bomba> lista){
         VerificarExplosionVillano(lista);
-        VerificarExplosionHeroe(lista);
+        if(Nivel.getNivel()==19){
+            if(!CuponDorado.flag_60s){
+                VerificarExplosionHeroe(lista);
+            }
+        }else if(Nivel.getNivel()==23){
+            if(!CuponDorado.HombreLlama()){
+                VerificarExplosionHeroe(lista);
+            }
+        }else{
+            VerificarExplosionHeroe(lista);
+        }
     }
 
     public static void VerificarExplosionHeroe(ArrayList<Bomba> lista){
         for(int i=0;i<lista.size();i++){
             if(lista.get(i).getPosX() == Heroe.GetPosX() && lista.get(i).getPosY() == Heroe.GetPosY()){
                 Heroe.setVida(Heroe.getVida()-1);
-    //            Juego.reiniciar();
+                //Juego.morir();
             }
         }
     }
@@ -88,17 +93,30 @@ public class Observer {
         for(int i=0;i<lista.size();i++){
             int cont=0;
             if(x==lista.get(i).getPosX() && y==lista.get(i).getPosY() && Tablero.Mapa[x][y] == '-'){
-                int largo = Nivel.list_villano.size();
-                for(int j=largo;j<largo+Juego.CantVillano;j++){
-                    Nivel.list_villano.add(new Villano(j,Nivel.list_villano.get(cont).getPosX(),
-                            Nivel.list_villano.get(cont).getPosY(),Nivel.list_villano.get(cont).getDireccion(),
-                            Nivel.list_villano.get(cont).getTipo(),Nivel.list_villano.get(cont).getEstado(),
-                            Nivel.list_villano.get(cont).getCamino()));
-                    cont++;
+                if(Nivel.puerta.getEstado()){
+                    int largo = Nivel.list_villano.size();
+                    for(int j=largo;j<largo+Juego.CantVillano;j++){
+                        Nivel.list_villano.add(new Villano(j,Nivel.list_villano.get(cont).getPosX(),
+                                Nivel.list_villano.get(cont).getPosY(),Nivel.list_villano.get(cont).getDireccion(),
+                                Nivel.list_villano.get(cont).getTipo(),Nivel.list_villano.get(cont).getEstado(),
+                                Nivel.list_villano.get(cont).getCamino()));
+                        cont++;
+                    }
                 }
             }
         }
     }
+
+    public static void VerificarExplosionCupon(ArrayList<Bomba> lista){
+        int x = Nivel.cupon.getPosX();
+        int y = Nivel.cupon.getPosY();
+        for(int i=0;i<lista.size();i++){
+            if(x==lista.get(i).getPosX() && y==lista.get(i).getPosY() && Tablero.Mapa[x][y] == '-' && !Nivel.cupon.getEstado() && Tablero.estado_cupon){
+                Nivel.cupon.setEstado(true);
+            }
+        }
+    }
+
 
     public static int SumarPuntosVillanos(ArrayList<Integer> lista){
         int puntos=0;
@@ -110,7 +128,6 @@ public class Observer {
 
     public static boolean GameOver(){
         if(Heroe.getVida()<=0){
-            System.out.println("GAMEOVER");
             return true;
         }
         return false;

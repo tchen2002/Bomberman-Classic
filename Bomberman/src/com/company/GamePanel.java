@@ -8,7 +8,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.TimerTask;
 import javax.swing.*;
+import java.util.Timer;
 
 public class GamePanel {
 
@@ -35,8 +37,8 @@ public class GamePanel {
         list_imag_cupones[3] = loadImage("Img/cupon3_patin.png");
         list_imag_cupones[4] = loadImage("Img/cupon4_bombarayada.png");
         list_imag_cupones[5] = loadImage("Img/cupon5_murorayado.png");
-        list_imag_cupones[6] = loadImage("Img/cupon6_hombreenllamas.png");
-        list_imag_cupones[7] = loadImage("Img/cupon7_pregunta.png");
+        list_imag_cupones[6] = loadImage("Img/cupon6_pregunta.png");
+        list_imag_cupones[7] = loadImage("Img/cupon7_hombreenllamas.png");
     }
 
     public void CargarImagenesGenerales(){
@@ -124,6 +126,15 @@ public class GamePanel {
 
         if(dibujarPuerta()){
             g.drawImage(puertita,Nivel.puerta.getPosY()*30,Nivel.puerta.getPosX()*30,null);
+
+            Timer time = new Timer();
+            time.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    Nivel.puerta.setEstado(true);
+                }
+            } ,5000);
+
         }
 
         if(dibujarCupon()) {
@@ -152,9 +163,10 @@ public class GamePanel {
     }
 
     public static boolean dibujarCupon(){
+        Heroe.EncontrarCupon();
         int x = Nivel.cupon.getPosX();
         int y = Nivel.cupon.getPosY();
-        if(Tablero.Mapa[x][y] == '-') return true;
+        if(Tablero.Mapa[x][y] == '-' && !Nivel.cupon.getEstado()) return true;
         else return false;
     }
 

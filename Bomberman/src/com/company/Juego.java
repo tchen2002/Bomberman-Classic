@@ -1,6 +1,5 @@
 package com.company;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,9 +28,10 @@ public class Juego implements Runnable, ActionListener {
 
     private int Velocidad;
     public static int Largo,Ancho, ProbaLadrillo;
-    private static int reloj = 20;
+    private static int reloj = 635;
 
     public static boolean running = false;
+    public static boolean pausa = true;
     private Thread thread;
 
     private BufferStrategy bs;
@@ -42,7 +42,7 @@ public class Juego implements Runnable, ActionListener {
         tablero = new Tablero(Largo,Ancho,ProbaLadrillo);
         tablero.llenarMatriz();
         observer = new Observer(0);
-        nivel = new Nivel(1,CantVillano);
+        nivel = new Nivel(3,CantVillano);
         nivel.iniciar();
         keyManager = new KeyManager();
         mouse = new Mouse();
@@ -53,7 +53,16 @@ public class Juego implements Runnable, ActionListener {
         nivel.iniciar();
         Heroe.SetPosX(1);
         Heroe.SetPosY(1);
-        SetTiempo(20);
+        SetTiempo(635);
+    }
+
+    public static void morir(){
+        for(int i=2;i<Nivel.list_cupon.size();i++){
+            if(!Nivel.list_cupon.get(i).getAfterLife()){
+                Nivel.list_cupon.get(i).setActivo(false);
+            }
+        }
+        reiniciar();
     }
 
     private void addMouseListener(Mouse mouse) {
@@ -129,7 +138,7 @@ public class Juego implements Runnable, ActionListener {
         gamePanel.getCanvas().addMouseListener(mouse);
         gamePanel.getCanvas().addMouseMotionListener(mouse);
         personajeElement = new PersonajeElement();
-        heroe = new Heroe(0,1,1,30,0,true,3,1,0);
+        heroe = new Heroe(0,1,1,30,0,true,3,2,0);
     }
 
 
@@ -147,25 +156,23 @@ public class Juego implements Runnable, ActionListener {
 
 
         while(running){
+            while(pausa){
+                now = System.nanoTime();
+                delta += (now - lastTime) / timePerTick;
+                timer += now - lastTime;
+                lastTime = now;
 
-            now = System.nanoTime();
-            delta += (now - lastTime) / timePerTick;
-            timer += now - lastTime;
-            lastTime = now;
-
-            if(delta >= 1){
-                setTiempo();
-                //System.out.println(getTiempo());
-                tick();
-                render();
-                ticks++;
-                delta--;
-
-            }
-
-            if(timer >= 1000000000){
-                ticks = 0;
-                timer = 0;
+                if(delta >= 1){
+                    setTiempo();
+                    tick();
+                    render();
+                    ticks++;
+                    delta--;
+                }
+                if(timer >= 1000000000){
+                    ticks = 0;
+                    timer = 0;
+                }
             }
         }
 

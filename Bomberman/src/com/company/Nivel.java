@@ -40,8 +40,6 @@ public class Nivel {
     }
 
     public void ENEMIGOS(int n){
-        System.out.println("N");
-        System.out.println(n);
         int x,y;
         ArrayList<Double> rango = new ArrayList<Double>();
         rango =  CalcularRango(n);
@@ -112,7 +110,7 @@ public class Nivel {
             x=GenerarRandom(Juego.Largo-1);
             y=GenerarRandom(Juego.Ancho-1);
         }
-        puerta = new Puerta(x,y,true);
+        puerta = new Puerta(x,y,false);
     }
 
     public void generarCupon(int Nivel){

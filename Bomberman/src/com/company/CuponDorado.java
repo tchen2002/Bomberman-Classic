@@ -1,12 +1,17 @@
 package com.company;
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class CuponDorado {
-    private int Cupon, Nivel,PosX,PosY;
+    private int Cupon, Nivel_,PosX,PosY;
     private boolean AfterLife, Estado,Activo;
+
+    public static boolean flag_60s;
 
     public CuponDorado(int cupon, int nivel, boolean afterLife, boolean activo) {
         Cupon = cupon;
-        Nivel = nivel;
+        Nivel_ = nivel;
         AfterLife = afterLife;
         Activo = activo;
     }
@@ -18,12 +23,73 @@ public class CuponDorado {
         PosY = posY;
     }
 
-    public void MasAlcanceBombas(){
+    public static void ActivarPoder(int c){
+        if(c==0){
+            MasAlcanceBombas();
+        }else if(c==1){
+            MasColocarBomba();
+        }else if(c==3){
+            Aumentarvelocidad();
+        }else if(c==6){
+            flag_60s=true;
+            Pregunta();
+        }
+    }
+
+    public static void MasAlcanceBombas(){
         Juego.heroe.setCantCupon((Juego.heroe.getCantCupon())+2);
     }
 
-    public void MasColocarBomba(){
+    public static void MasColocarBomba(){
         Juego.heroe.setCantBomba((Juego.heroe.getCantBomba())+1);
+    }
+
+    public static void Detonador(){
+        Juego.list_bomba.get(0).setEstado(true);
+        Bomba.render();
+    }
+
+    public static boolean AtraviesaBomba(){
+        if(Nivel.list_cupon.get(Nivel.cupon.getCupon()).getNivel()==11 && Nivel.list_cupon.get(Nivel.cupon.getCupon()).getActivo()){
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean AtraviesaMuro(){
+        if(Nivel.list_cupon.get(Nivel.cupon.getCupon()).getNivel()==14 && Nivel.list_cupon.get(Nivel.cupon.getCupon()).getActivo()){
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean HombreLlama(){
+        if(Nivel.list_cupon.get(Nivel.cupon.getCupon()).getNivel()==23 && Nivel.list_cupon.get(Nivel.cupon.getCupon()).getActivo()){
+            return true;
+        }
+        return false;
+    }
+
+    public static void Pregunta(){
+        if(Nivel.list_cupon.get(Nivel.cupon.getCupon()).getNivel()==19 && Nivel.list_cupon.get(Nivel.cupon.getCupon()).getActivo()){
+            Timer time = new Timer();
+            time.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    flag_60s=false;
+                }
+            } ,60000);
+        }
+    }
+
+    public static void Aumentarvelocidad(){
+        Juego.heroe.setVelocidad((Juego.heroe.getVelocidad())*1.5);
+    }
+
+    public void AumentarVelocidad(){
+        for(int i=0;i<Nivel.list_villano.size();i++){
+            Nivel.list_villano.get(i).setVelocidad(Nivel.list_villano.get(i).getVelocidad() * 1.5);
+        }
     }
 
     public int getCupon() {
@@ -35,11 +101,11 @@ public class CuponDorado {
     }
 
     public int getNivel() {
-        return Nivel;
+        return Nivel_;
     }
 
     public void setNivel(int nivel) {
-        Nivel = nivel;
+        Nivel_ = nivel;
     }
 
     public int getPosX() {

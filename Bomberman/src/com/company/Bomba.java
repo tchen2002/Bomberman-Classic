@@ -16,7 +16,7 @@ public class Bomba{
     }
 
     public static void render(){
-        PersonajeElement.dibujarExplosion(30,30);
+        PersonajeElement.dibujarExplosion();
         }
 
 

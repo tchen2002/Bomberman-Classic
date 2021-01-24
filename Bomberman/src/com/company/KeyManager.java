@@ -37,15 +37,28 @@ public class KeyManager implements KeyListener, ActionListener {
         }
 
         if(keys[KeyEvent.VK_X] || keys[KeyEvent.VK_SHIFT]){
-            Heroe.ColocarBomba();
+            if(Heroe.getCantBomba()>0){
+                Heroe.ColocarBomba();
+                Heroe.setCantBomba(Heroe.getCantBomba()-1);
+            }
         }
 
         if(keys[KeyEvent.VK_ENTER]){
-            //Pone el juego en pausa
+           if(Juego.pausa==true){
+               Juego.pausa=false;
+           }else{
+               Juego.pausa=true;
+           }
+
         }
 
         if(keys[KeyEvent.VK_SPACE]){
             //Detona la bomba que lleva mas tiempo
+            if(Nivel.list_cupon.get(2).getActivo()){
+                if(!Juego.list_bomba.isEmpty()){
+                    CuponDorado.Detonador();
+                }
+            }
         }
 
     }

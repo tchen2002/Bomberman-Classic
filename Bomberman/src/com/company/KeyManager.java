@@ -1,11 +1,13 @@
 package com.company;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 
 public class KeyManager implements KeyListener, ActionListener {
 
-    private boolean[] keys;
+    private final boolean[] keys;
     public boolean up, down, left, right;
 
     public KeyManager(){
@@ -44,11 +46,7 @@ public class KeyManager implements KeyListener, ActionListener {
         }
 
         if(keys[KeyEvent.VK_ENTER]){
-           if(Juego.pausa==true){
-               Juego.pausa=false;
-           }else{
-               Juego.pausa=true;
-           }
+            Juego.pausa= Juego.pausa != true;
 
         }
 

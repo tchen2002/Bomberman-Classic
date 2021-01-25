@@ -212,6 +212,6 @@ public class Nivel {
     }
 
     public void setCantVillano(int cantVillano) {
-        this.CantVillano = cantVillano;
+        CantVillano = cantVillano;
     }
 }

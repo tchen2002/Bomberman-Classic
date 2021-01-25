@@ -1,5 +1,6 @@
 package com.company;
 
+import javax.sound.sampled.UnsupportedAudioFileException;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,12 +14,14 @@ import java.util.TimerTask;
 
 public class Juego implements Runnable, ActionListener {
 
+    private static Sonido sonidoBG;
+
     static ArrayList<Bomba> list_bomba = new ArrayList<Bomba>();
     private PersonajeElement personajeElement;
     private GamePanel gamePanel;
-    private KeyManager keyManager;
+    private final KeyManager keyManager;
     public static Heroe heroe;
-    private Mouse mouse;
+    private final Mouse mouse;
 
     public static Tablero tablero;
     public static Nivel nivel;
@@ -49,6 +52,21 @@ public class Juego implements Runnable, ActionListener {
     }
 
     public static void reiniciar(){
+        Timer time1 = new Timer();
+        time1.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                tablero.llenarMatriz();
+                nivel.iniciar();
+                Heroe.SetPosX(1);
+                Heroe.SetPosY(1);
+                SetTiempo(635);
+
+            }
+        } ,2000);
+    }
+
+    public static void pasar(){
         tablero.llenarMatriz();
         nivel.iniciar();
         Heroe.SetPosX(1);
@@ -57,12 +75,22 @@ public class Juego implements Runnable, ActionListener {
     }
 
     public static void morir(){
-        for(int i=2;i<Nivel.list_cupon.size();i++){
-            if(!Nivel.list_cupon.get(i).getAfterLife()){
-                Nivel.list_cupon.get(i).setActivo(false);
+        Timer time = new Timer();
+        time.schedule(new TimerTask() {
+            @Override
+            public void run() {
+
+                Sonido sonidoMuerte = new Sonido();
+                sonidoMuerte.play("Img/muerte.mp3");
+                for(int i=2;i<Nivel.list_cupon.size();i++){
+                    if(!Nivel.list_cupon.get(i).getAfterLife()){
+                        Nivel.list_cupon.get(i).setActivo(false);
+                    }
+                }
             }
-        }
+        } ,2000);
         reiniciar();
+
     }
 
     private void addMouseListener(Mouse mouse) {
@@ -97,9 +125,9 @@ public class Juego implements Runnable, ActionListener {
         Villano.DibujarVillanos(g);
         Observer.VerificarColision();
         if(Observer.PasarSiguienteNivel()){
-            nivel.setNivel(nivel.getNivel()+1);
+            Nivel.setNivel(Nivel.getNivel()+1);
             Heroe.setVida(Heroe.getVida()+1);
-            reiniciar();
+            pasar();
         }
         /*
         if(Observer.GameOver()){

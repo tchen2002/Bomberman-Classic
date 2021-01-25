@@ -37,11 +37,11 @@ public class CuponDorado {
     }
 
     public static void MasAlcanceBombas(){
-        Juego.heroe.setCantCupon((Juego.heroe.getCantCupon())+2);
+        Juego.heroe.setCantCupon((Heroe.getCantCupon())+2);
     }
 
     public static void MasColocarBomba(){
-        Juego.heroe.setCantBomba((Juego.heroe.getCantBomba())+1);
+        Heroe.setCantBomba((Heroe.getCantBomba())+1);
     }
 
     public static void Detonador(){
@@ -50,24 +50,15 @@ public class CuponDorado {
     }
 
     public static boolean AtraviesaBomba(){
-        if(Nivel.list_cupon.get(Nivel.cupon.getCupon()).getNivel()==11 && Nivel.list_cupon.get(Nivel.cupon.getCupon()).getActivo()){
-            return true;
-        }
-        return false;
+        return Nivel.list_cupon.get(Nivel.cupon.getCupon()).getNivel() == 11 && Nivel.list_cupon.get(Nivel.cupon.getCupon()).getActivo();
     }
 
     public static boolean AtraviesaMuro(){
-        if(Nivel.list_cupon.get(Nivel.cupon.getCupon()).getNivel()==14 && Nivel.list_cupon.get(Nivel.cupon.getCupon()).getActivo()){
-            return true;
-        }
-        return false;
+        return Nivel.list_cupon.get(Nivel.cupon.getCupon()).getNivel() == 14 && Nivel.list_cupon.get(Nivel.cupon.getCupon()).getActivo();
     }
 
     public static boolean HombreLlama(){
-        if(Nivel.list_cupon.get(Nivel.cupon.getCupon()).getNivel()==23 && Nivel.list_cupon.get(Nivel.cupon.getCupon()).getActivo()){
-            return true;
-        }
-        return false;
+        return Nivel.list_cupon.get(Nivel.cupon.getCupon()).getNivel() == 23 && Nivel.list_cupon.get(Nivel.cupon.getCupon()).getActivo();
     }
 
     public static void Pregunta(){

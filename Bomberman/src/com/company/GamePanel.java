@@ -20,7 +20,8 @@ public class GamePanel {
     private JLabel timeLabel,scoreLabel,lifeLabel;
     public static BufferedImage acero,ladrillo,sacate,bomba,puertita,cc;
     final BufferedImage[]  list_imag_cupones = new BufferedImage[8];
-    private int LargoTablero,AnchoTablero;
+    private final int LargoTablero;
+    private final int AnchoTablero;
 
     public GamePanel(int AnchoTablero,int LargoTablero){
         this.AnchoTablero= AnchoTablero;
@@ -158,21 +159,18 @@ public class GamePanel {
     public static boolean dibujarPuerta(){
         int x = Nivel.puerta.getPosX();
         int y = Nivel.puerta.getPosY();
-        if(Tablero.Mapa[x][y] == '-') return true;
-        else return false;
+        return Tablero.Mapa[x][y] == '-';
     }
 
     public static boolean dibujarCupon(){
         Heroe.EncontrarCupon();
         int x = Nivel.cupon.getPosX();
         int y = Nivel.cupon.getPosY();
-        if(Tablero.Mapa[x][y] == '-' && !Nivel.cupon.getEstado()) return true;
-        else return false;
+        return Tablero.Mapa[x][y] == '-' && !Nivel.cupon.getEstado();
     }
 
     public static boolean dibujarBomba(){
-        if(Juego.list_bomba.isEmpty()) return false;
-        else return true;
+        return !Juego.list_bomba.isEmpty();
     }
 
     public Canvas getCanvas() {

@@ -37,9 +37,13 @@ public class Observer {
 
     public static void VerificarColision(){
         for(int i=0;i<Nivel.list_villano.size();i++){
-            if(Heroe.GetPosX() ==Nivel.list_villano.get(i).getPosX() &&  Heroe.GetPosY() ==Nivel.list_villano.get(i).getPosY()){
+            if(Heroe.GetPosX() ==Nivel.list_villano.get(i).getPosX() &&  Heroe.GetPosY() ==Nivel.list_villano.get(i).getPosY() && Nivel.list_villano.get(i).getEstado() ){
+                /*
+                for(int c=0;c<Nivel.list_villano.size();c++){
+                    Nivel.list_villano.get(c).setEstado(false);
+                }*/
                 Heroe.setVida(Heroe.getVida()-1);
-                //Juego.morir();
+                // Juego.morir();
             }
         }
     }
@@ -63,7 +67,10 @@ public class Observer {
         for(int i=0;i<lista.size();i++){
             if(lista.get(i).getPosX() == Heroe.GetPosX() && lista.get(i).getPosY() == Heroe.GetPosY()){
                 Heroe.setVida(Heroe.getVida()-1);
-                //Juego.morir();
+                /* for(int c=0;c<Nivel.list_villano.size();c++){
+                    Nivel.list_villano.get(c).setEstado(false);
+                }
+                Juego.morir();*/
             }
         }
     }
@@ -78,6 +85,16 @@ public class Observer {
                     m_villanos.add(lista.get(i).getPosX());
                     m_villanos.add(lista.get(i).getPosY());
                     Nivel.list_villano.get(j).setEstado(false);
+                    if(CantRestanteVillano()==0){
+                        Timer time = new Timer();
+                        time.schedule(new TimerTask() {
+                            @Override
+                            public void run() {
+                                Sonido sonidoUltimoVillano = new Sonido();
+                                sonidoUltimoVillano.play("Img/ultimo.mp3");
+                            }
+                        } ,2000);
+                    }
                 }
             }
         }
@@ -126,11 +143,18 @@ public class Observer {
         return puntos;
     }
 
-    public static boolean GameOver(){
-        if(Heroe.getVida()<=0){
-            return true;
+    public static int CantRestanteVillano(){
+        int cont=0;
+        for(int i=0; i<Nivel.list_villano.size();i++){
+            if(Nivel.list_villano.get(i).getEstado()){
+                cont++;
+            }
         }
-        return false;
+        return cont;
+    }
+
+    public static boolean GameOver(){
+        return Heroe.getVida() <= 0;
     }
 
     public static boolean QuedaVillano(){

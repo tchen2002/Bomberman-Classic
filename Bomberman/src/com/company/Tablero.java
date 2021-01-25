@@ -11,7 +11,7 @@ public class Tablero {
         this.Largo = Largo;
         this.Ancho = Ancho;
         this.ProbaLadrillo = ProbaLadrillo;
-        this.Mapa = new char[Largo][Ancho];
+        Mapa = new char[Largo][Ancho];
         //llenarMatriz();
     }
 
@@ -19,16 +19,16 @@ public class Tablero {
         for (int i = 0; i < Largo; i++) {
             for (int j = 0; j < Ancho; j++) {
                 if((i==1 && j==1) || (i==1 && j==2) || (i==2 && j==1)){
-                    this.Mapa[i][j] = '-';
+                    Mapa[i][j] = '-';
                 }else if( (i==0) || (j==0) || (i== (Largo-1)) || (j==(Ancho-1)) ){
-                    this.Mapa[i][j] = 'A';
+                    Mapa[i][j] = 'A';
                 }else if( (i%2==0) && (j%2==0)){
-                    this.Mapa[i][j] = 'A';
+                    Mapa[i][j] = 'A';
                 }else{
                     if(generarRandom()){
-                        this.Mapa[i][j]='L';
+                        Mapa[i][j]='L';
                     }else{
-                        this.Mapa[i][j] = '-';
+                        Mapa[i][j] = '-';
                     }
                 }
             }
@@ -40,8 +40,7 @@ public class Tablero {
         double num;
         Random rand = new Random();
         num = rand.nextInt(100);
-        if(num>ProbaLadrillo)  res=false;
-        else res=true;
+        res= !(num > ProbaLadrillo);
         return res;
     }
 

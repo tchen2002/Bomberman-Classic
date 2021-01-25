@@ -1,27 +1,40 @@
 package com.company;
 
-import sun.audio.*;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.UnsupportedAudioFileException;
-import java.io.*;
-import java.util.Timer;
-import java.util.TimerTask;
+import javazoom.jl.decoder.JavaLayerException;
+import javazoom.jl.player.Player;
 
-public class Sonido{
+public class Sonido {
+    private static Player player = null;
+    private String Sonido;
+    public Sonido(){
+    }
 
-    public static void ReproducirSonido(String nombreSonido) throws IOException, UnsupportedAudioFileException {
-
-        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(nombreSonido).getAbsoluteFile());
-        AudioPlayer.player.start(audioInputStream);
-        Timer time = new Timer();
-
-        time.schedule(new TimerTask() {
+    public static void play(String s) {
+        new Thread(new Runnable() {
             @Override
             public void run() {
-                AudioPlayer.player.stop(audioInputStream);
+                try {
+                    File file = new File(s);
+                    FileInputStream fis = new FileInputStream(file);
+                    BufferedInputStream stream = new BufferedInputStream(fis);
+                    player = new Player(stream);
+                    player.play();
+                } catch (Exception e) {
+
+                    // TODO: handle exception
+                }
             }
-        } ,1300);
+        }).start();
+        try {
+            Thread.sleep(20000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        player.close();
     }
 }

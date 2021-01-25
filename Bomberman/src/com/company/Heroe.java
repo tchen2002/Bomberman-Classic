@@ -1,6 +1,8 @@
 package com.company;
 
 import java.awt.*;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Heroe extends Personaje {
 
@@ -10,9 +12,9 @@ public class Heroe extends Personaje {
 
 
     public Heroe(int id,int PosX, int PosY, double Velocidad, int Direccion, boolean Estado,int Vida,int cantBomba,int CantCupon) {
-        this.Vida = Vida;
-        this.CantBomba = cantBomba;
-        this.CantCupon = CantCupon;
+        Heroe.Vida = Vida;
+        CantBomba = cantBomba;
+        Heroe.CantCupon = CantCupon;
     }
 
     public static void ColocarBomba(){
@@ -43,10 +45,21 @@ public class Heroe extends Personaje {
         int y = Nivel.cupon.getPosY();
         if(Tablero.Mapa[x][y] == '-' && Heroe.GetPosX()==x && Heroe.GetPosY()==y && !Nivel.cupon.getEstado()){
             if(!Nivel.cupon.getEstado()){
-                Juego.heroe.setCantCupon((Juego.heroe.getCantCupon())+1);
+                Juego.heroe.setCantCupon((getCantCupon())+1);
                 Nivel.cupon.setEstado(true);
                 Nivel.list_cupon.get(Nivel.cupon.getCupon()).setActivo(true);
                 CuponDorado.ActivarPoder(Nivel.cupon.getCupon());
+
+                Timer time = new Timer();
+                time.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+
+                        Sonido sonidoCupon = new Sonido();
+                        sonidoCupon.play("Img/cupondorado.mp3");
+                    }
+                } ,2000);
+
             }
         }
     }
@@ -54,10 +67,7 @@ public class Heroe extends Personaje {
     public static boolean EncontrarPuerta(){
         int x = Nivel.puerta.getPosX();
         int y = Nivel.puerta.getPosY();
-        if(Tablero.Mapa[x][y] == '-' && Heroe.GetPosX()==x && Heroe.GetPosY()==y){
-            return true;
-        }
-        return false;
+        return Tablero.Mapa[x][y] == '-' && Heroe.GetPosX() == x && Heroe.GetPosY() == y;
     }
 
     @Override

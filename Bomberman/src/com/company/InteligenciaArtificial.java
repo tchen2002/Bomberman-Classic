@@ -4,7 +4,7 @@ package com.company;
 import java.util.Random;
 
 public class InteligenciaArtificial {
-    private int TipoInteligencia;
+    private final int TipoInteligencia;
 
     public InteligenciaArtificial(int tipoInteligencia) {
         TipoInteligencia = tipoInteligencia;

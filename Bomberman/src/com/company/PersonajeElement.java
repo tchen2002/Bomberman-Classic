@@ -13,10 +13,12 @@ import java.util.TimerTask;
 
 public class PersonajeElement {
 
+    private static Sonido sonidoBomba;
+
     private static ArrayList<Integer> list_muertes_villanos = new ArrayList<Integer>();
     private static boolean estado_muertos = false;
-    private static ArrayList<Integer> list_explosion = new ArrayList<Integer>();
-    private static ArrayList<Animacion> list_enemigos_animacion = new ArrayList<Animacion>();
+    private static final ArrayList<Integer> list_explosion = new ArrayList<Integer>();
+    private static final ArrayList<Animacion> list_enemigos_animacion = new ArrayList<Animacion>();
     private static boolean estado_bomba;
     private BufferStrategy bs;
     private Graphics g;
@@ -209,19 +211,12 @@ public class PersonajeElement {
                     list_explosion.add((Juego.list_bomba.get(0).getPosY()));
                     Juego.list_bomba.remove(0);
                     Heroe.setCantBomba(Heroe.getCantBomba()+1);
-/*
-                try {
-                    Sonido.ReproducirSonido("Img/boom.wav");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (UnsupportedAudioFileException e) {
-                    e.printStackTrace();
-                }
-*/
+                    Sonido sonidoExplosion = new Sonido();
+                    sonidoExplosion.play("Img/boom.mp3");
                 }
             } ,2000);
-        }
-    }
+   }
+                }
 
     public static void dibujar_enemigo(Graphics g,int id, int tipo,int x,int y){
         if(Nivel.list_villano.get(id).getCamino()){

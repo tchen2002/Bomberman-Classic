@@ -10,13 +10,22 @@ public class Heroe extends Personaje {
     public static int Vida,CantBomba,CantCupon;
     private static int colision;
 
-
+    /* Función: Heroe
+       Dominio: Un id,posicion x,y, velocidad,direccion,estado,vida, cantidad de bombas y
+                cantidad de cupones de tipo entero o flotante
+       Codominio: Constructor que inicializa las variables de la clase Heroe
+    */
     public Heroe(int id,int PosX, int PosY, double Velocidad, int Direccion, boolean Estado,int Vida,int cantBomba,int CantCupon) {
         Heroe.Vida = Vida;
         CantBomba = cantBomba;
         Heroe.CantCupon = CantCupon;
     }
 
+    /* Función: Colocar Bomba
+       Dominio: No recibe ningún parámetro
+       Codominio: Según la posición x, y del héroe si en el nivel se encuentra el cupón activo crea la bomba con esas características
+                  del cupón,  de lo contrario solo crea la bomba
+    */
     public static void ColocarBomba(){
         int X= PosX;
         int Y= PosY;
@@ -30,6 +39,12 @@ public class Heroe extends Personaje {
         Bomba.render();
     }
 
+    /* Función: Mover
+        Dominio: Una dirección de tipo entero
+        Codominio: Verifica si esa próxima posición es un muro o ladrillo
+                   Si no lo es actualiza la nueva posición del héroe según
+                   la dirección que entró como parámetro
+     */
     public static void mover(int dir){
         colision = Tablero.colision(PosX,PosY,dir);
         if (colision == 0) {
@@ -40,6 +55,11 @@ public class Heroe extends Personaje {
         }
     }
 
+    /* Función: Encontrar Cupon
+       Dominio: No recibe ningún parámetro
+       Codominio: Cuando el héroe encuentra el cupón, se actualizará el estado del cupón y activará el poder
+       y suena el sonido de campana
+*/
     public static void EncontrarCupon(){
         int x = Nivel.cupon.getPosX();
         int y = Nivel.cupon.getPosY();
@@ -64,6 +84,10 @@ public class Heroe extends Personaje {
         }
     }
 
+    /* Función: Encontrar Puerta
+       Dominio: No recibe ningún parámetro
+       Codominio: Verificar si el héroe ya encontró la puerta
+    */
     public static boolean EncontrarPuerta(){
         int x = Nivel.puerta.getPosX();
         int y = Nivel.puerta.getPosY();
@@ -74,6 +98,11 @@ public class Heroe extends Personaje {
     public void tick(int dir) {
     }
 
+    /* Función: Render
+       Dominio:
+       Codominio: Si las coordenadas están en 0,0 de cambian a 1,1
+                  para evitar problemas de colisiones
+    */
     @Override
     public void render(Graphics g) {
         if (PosX == 0 && PosY == 0){
@@ -83,6 +112,11 @@ public class Heroe extends Personaje {
         PersonajeElement.dibujar_heroe(g,PosX,PosY);
     }
 
+
+    /* --------------------------------------------------
+                      Getters y Setters
+       --------------------------------------------------
+    */
     public static int getVida() {
         return Vida;
     }

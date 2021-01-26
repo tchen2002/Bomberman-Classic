@@ -38,11 +38,19 @@ public class PersonajeElement {
 
     private int PosX,PosY;
 
+    /* Función: PersonajeElement
+   Dominio: Recibe posiciones x,y de tipo entero
+   Codominio: Constructor que llama a las variables de la clase que se vaya a utilizar
+*/
     public PersonajeElement(int PosX, int PosY){
         this.PosX=PosX;
         this.PosY=PosY;
     }
 
+    /* Función: Personaje Element
+ Dominio:  No recibe ningún parámetro
+ Codominio: Llama a las funciones para cargar todas las imagenes relacionadas a los personajes del juego
+*/
     public PersonajeElement(){
         CargarImagenesHeroe();
         CargarImagenesEnemigos();
@@ -50,6 +58,10 @@ public class PersonajeElement {
         CargarImagenesMuerteVillano();
     }
 
+    /* Función: Cargar Imagenes Muerte Villano
+   Dominio:  No recibe ningún parámetro
+   Codominio: Carga las imagenes que se van a utilizar para la muerte de un villano en un arreglo
+*/
     public void CargarImagenesMuerteVillano(){
         muerte_villano = new BufferedImage[2];
         muerte_villano[0] = loadImage("Img/muerte1.png");
@@ -57,6 +69,10 @@ public class PersonajeElement {
         animacion_muerte_villano = new Animacion(500,muerte_villano);
     }
 
+    /* Función: Cargar Imagenes Heroe
+      Dominio:  No recibe ningún parámetro
+      Codominio: Carga las imagenes que se van a utilizar para representar un heroe en el tablero
+*/
     public void CargarImagenesHeroe(){
         heroe_caminando = new BufferedImage[2];
         heroe_caminando[0] = loadImage("Img/heroe1.png");
@@ -64,6 +80,10 @@ public class PersonajeElement {
         animacion_heroe = new Animacion(500,heroe_caminando);
     }
 
+    /* Función: Cargar Imagenes Bomba
+        Dominio:  No recibe ningún parámetro
+        Codominio: Carga las imagenes que se van a utilizar para representar una explosion de bomba en el tablero
+*/
     public void CargarImagenesBomba(){
         bomba_explosion = new BufferedImage[2];
         bomba_explosion[0] =loadImage("Img/expo1.png");
@@ -73,6 +93,10 @@ public class PersonajeElement {
         animacion_bomba = new Animacion(500,bomba_explosion);
     }
 
+    /* Función: Cargar Imagenes Enemigos
+        Dominio:  No recibe ningún parámetro
+        Codominio: Carga las imagenes que se van a utilizar para representar enemigos en los diferentes niveles
+*/
     public void CargarImagenesEnemigos(){
         list_img_villanos[0] = loadImage("Img/globo1.png");
         list_img_villanos[1] = loadImage("Img/cel1.png");
@@ -128,21 +152,36 @@ public class PersonajeElement {
         list_enemigos_animacion.add(animacion_mong_rebotando);
     }
 
+    /* Función: Heroe Anima
+   Dominio: No recibe ningún parámetro
+   Codominio: llamar la función de animación
+    */
     public static void heroe_anima(){
         animacion_heroe.tick();
     }
 
-
+    /* Función: Rebota
+     Dominio: Recibe el gráfico, un id, coordenadas y un tipo, enteros todos
+     Codominio: Permite hacer la ilusión de que el villano rebota cuando llega a un muro
+    */
     public static void rebotar(Graphics g,int id,int x,int y,int tipo){
         list_enemigos_animacion.get(tipo).tick();
         g.drawImage(list_enemigos_animacion.get(tipo).getCurrentFrame(),x,y,null);
         Nivel.list_villano.get(id).setCamino(true);
     }
 
+    /* Función: Explosion
+      Dominio: No recibe ningún parámetro
+      Codominio: animación de explosión
+*/
     public static void explosion(){
         animacion_bomba.tick();
     }
 
+    /* Función: Render
+      Dominio: Recibe un grafico
+      Codominio: Representar los objetos en la tabla
+*/
     public static void render(Graphics g){
                 if(estado_bomba){
                     explosion();
@@ -183,12 +222,20 @@ public class PersonajeElement {
 
     }
 
+    /* Función: Dibujar Héroe
+      Dominio: Gráfico,coordenadas x,y
+      Codominio: Muestra al héroe en el tablero según las coordenadas ingresadas
+*/
     public static void dibujar_heroe(Graphics g,int PosX, int PosY){
         heroe_anima();
         g.drawImage(animacion_heroe.getCurrentFrame(),PosY*30,PosX*30,null);
         render(g);
     }
 
+    /* Función: Dibujar villanos muertos
+         Dominio: Una lista de tipo arreglo de enteros
+         Codominio: dibujar animación de aquellos enemigos que se murieron en una explosión
+    */
     public static boolean dibujar_villanos_muertos(ArrayList<Integer> lista){
         list_muertes_villanos.clear();
         if(!lista.isEmpty()){
@@ -199,6 +246,11 @@ public class PersonajeElement {
         return false;
     }
 
+
+    /* Función: Dibujar explosion
+     Dominio: No recibe ningún parámetro
+     Codominio: dibujar explosión y cambiar estado de la bomba
+    */
     public static void dibujarExplosion(){
         if(!Juego.list_bomba.isEmpty() && Juego.list_bomba.get(0).getEstado()){
             Timer time = new Timer();
@@ -218,6 +270,10 @@ public class PersonajeElement {
    }
                 }
 
+    /* Función: Dibujar enemigo
+        Dominio: Recibe un grafico, un id,tipo y coordenadas de tipo entero
+        Codominio: Dibuja el villano en el tablero segun las coordenadas dadas
+    */
     public static void dibujar_enemigo(Graphics g,int id, int tipo,int x,int y){
         if(Nivel.list_villano.get(id).getCamino()){
             g.drawImage(list_img_villanos[tipo],x,y,null);
@@ -226,6 +282,10 @@ public class PersonajeElement {
         }
     }
 
+    /* Función: loadImage
+       Dominio: recibir la ruta de la imagen
+       Codominio: cargar la imagen
+*/
     public static BufferedImage loadImage(String path){
         File file = new File(path);
         try {

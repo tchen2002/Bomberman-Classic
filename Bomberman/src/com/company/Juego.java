@@ -40,17 +40,29 @@ public class Juego implements Runnable, ActionListener {
     private BufferStrategy bs;
     public static Graphics g;
 
+    /* Función: Juego
+       Dominio: No recibe ningún parámetro
+       Codominio: Lee los datos del archivo de configuración, inicializa lo
+              necesario para comenzar el juego como los objetos de las clase: Tablero,
+              Observe,el nivel,el teclado y mouse
+*/
     public Juego(){
         leerDatos("Img/archiConf.txt");
         tablero = new Tablero(Largo,Ancho,ProbaLadrillo);
         tablero.llenarMatriz();
         observer = new Observer(0);
-        nivel = new Nivel(3,CantVillano);
+        nivel = new Nivel(1,CantVillano);
         nivel.iniciar();
         keyManager = new KeyManager();
         mouse = new Mouse();
+        Ruta ruta_corta = new Ruta();
     }
 
+    /* Función: Reiniciar
+       Dominio: No recibe ningún parámetro
+       Codominio: Restablece los valores de inicio del juego,cambiando la posición del Heroe a la inicial
+                 Igual que el tiempo vuelve a comenzar a 200 segundos
+*/
     public static void reiniciar(){
         Timer time1 = new Timer();
         time1.schedule(new TimerTask() {
@@ -66,7 +78,11 @@ public class Juego implements Runnable, ActionListener {
         } ,2000);
     }
 
-    public static void pasar(){
+    /* Función: pasarNivel
+       Dominio: No recibe ningún parámetro
+       Codominio: el héroe pasa al siguiente nivel y reinicia el tablero
+*/
+    public static void pasarNivel(){
         tablero.llenarMatriz();
         nivel.iniciar();
         Heroe.SetPosX(1);
@@ -74,6 +90,11 @@ public class Juego implements Runnable, ActionListener {
         SetTiempo(635);
     }
 
+    /* Función: Morir
+       Dominio: No recibe ningún parámetro
+       Codominio: cuando el héroe se muere, suena el sonido de que se murió, y desactivarán los poderes
+       que no son de after life y reinciar el juego
+*/
     public static void morir(){
         Timer time = new Timer();
         time.schedule(new TimerTask() {
@@ -96,6 +117,11 @@ public class Juego implements Runnable, ActionListener {
     private void addMouseListener(Mouse mouse) {
     }
 
+    /* Función: Leer Datos
+       Dominio: Recibe un string
+       Codominio: Almacena en las varibles correspondientes los datos del archivo
+               de configuración inicial
+*/
     private void leerDatos(String path){
         String file = loadFileAsString(path);
         String[] tokens = file.split("\\s+");
@@ -106,10 +132,16 @@ public class Juego implements Runnable, ActionListener {
         Velocidad = parseInt(tokens[4]);
     }
 
+    /* Función: Tick
+       Dominio: No recibe ningún parámetro */
     private void tick(){
         keyManager.tick();
     }
 
+        /*Función: Render
+          Dominio: No recibe ningún parámetro
+          Codominio: llaman las funciones principales del proyecto para iniciar el juego
+        */
     private void render(){
         bs=gamePanel.getCanvas().getBufferStrategy();
         if(bs==null){
@@ -127,9 +159,9 @@ public class Juego implements Runnable, ActionListener {
         if(Observer.PasarSiguienteNivel()){
             Nivel.setNivel(Nivel.getNivel()+1);
             Heroe.setVida(Heroe.getVida()+1);
-            pasar();
+            pasarNivel();
         }
-        /*
+
         if(Observer.GameOver()){
             GamePanel.dibujarGameover(g);
 
@@ -140,7 +172,7 @@ public class Juego implements Runnable, ActionListener {
                     System.exit( 0 );
                 }
             } ,2000);
-        }*/
+        }
 
         if (getTiempo() == 0){
             Villano.ConvertirMonedasG();
@@ -157,6 +189,11 @@ public class Juego implements Runnable, ActionListener {
         g.dispose();
     }
 
+    /* Función: Init
+  Dominio: No recibe ningún parámetro
+  Codominio: Inicializa lo relacionado con la interfaz como el panel, controles de teclado y mouse
+             a los personajes como al heroe
+*/
     public void init(){
         gamePanel = new GamePanel(Ancho*30,Largo*30);
         //gamePanel.getFrame().addKeyListener(keyManager);
@@ -166,10 +203,16 @@ public class Juego implements Runnable, ActionListener {
         gamePanel.getCanvas().addMouseListener(mouse);
         gamePanel.getCanvas().addMouseMotionListener(mouse);
         personajeElement = new PersonajeElement();
-        heroe = new Heroe(0,1,1,30,0,true,3,2,0);
+        heroe = new Heroe(0,1,1,30,0,true,3,1,0);
     }
 
-
+    /* Función: Run
+      Dominio: No recibe ningún parámetro
+      Codominio: Permite que el programa se mueva y realice todas las funciones
+                 Va a correr en un tiempo establecido
+                 Puede estar en pausa o corriendo mientras el tiempo se va decrementando
+                 Llama a las funciones tick y render
+   */
     @Override
     public void run() {
         init();
@@ -213,6 +256,10 @@ public class Juego implements Runnable, ActionListener {
 
     public Mouse getMouseManager(){  return mouse; }
 
+    /* Función: Start
+   Dominio: No recibe ningún parámetro
+   Codominio: crear un hilo para ejecutar el juego
+ */
     public synchronized void start(){
         if(running) return;
         running = true;
@@ -221,6 +268,10 @@ public class Juego implements Runnable, ActionListener {
 
     }
 
+    /* Función: Stop
+       Dominio: No recibe ningún parámetro
+       Codominio: cambia running por false para indicar que debe deternese el juego
+     */
     public synchronized void stop(){
         if(!running) return;
         running = false;
@@ -236,6 +287,11 @@ public class Juego implements Runnable, ActionListener {
 
     }
 
+    /* Función: Cargar Archivo como string
+   Dominio: Un string con los datos del archivo
+   Codominio: cargar el contenido del archivo como string
+
+ */
     public static String loadFileAsString(String path){
         StringBuilder builder = new StringBuilder();
         try{
@@ -252,6 +308,12 @@ public class Juego implements Runnable, ActionListener {
         return builder.toString();
     }
 
+    /* Función: parseInt
+   Dominio: Un string con los datos del archivo
+   Codominio: Cambia el formato de un string a formato int para poderlo usar
+              en el programa
+
+*/
     public static int parseInt(String number){
         try{
             return Integer.parseInt(number);
@@ -260,6 +322,11 @@ public class Juego implements Runnable, ActionListener {
             return 0;
         }
     }
+
+    /* ------------------------------------------
+           Getters y Setters
+   ------------------------------------------
+ */
     public static int getTiempo(){
         return reloj;
     }

@@ -23,6 +23,10 @@ public class GamePanel {
     private final int LargoTablero;
     private final int AnchoTablero;
 
+    /* Función: GamePanel
+       Dominio: Recibe el ancho y largo del tablero de tipo entero
+       Codominio: Constructor que inicializa las variables de la clase GamePanel
+    */
     public GamePanel(int AnchoTablero,int LargoTablero){
         this.AnchoTablero= AnchoTablero;
         this.LargoTablero= LargoTablero;
@@ -31,6 +35,10 @@ public class GamePanel {
         CargarImagenesCupones();
     }
 
+    /* Función:  Cargar Imagenes Cupones
+       Dominio:  No recibe ningún parámetro
+       Codominio: La lista de cupones cargada con las imagenes correspondientes de cada uno
+*/
     public void CargarImagenesCupones(){
         list_imag_cupones[0] = loadImage("Img/cupon0_sol.png");
         list_imag_cupones[1] = loadImage("Img/cupon1_bombaextra.png");
@@ -42,6 +50,11 @@ public class GamePanel {
         list_imag_cupones[7] = loadImage("Img/cupon7_hombreenllamas.png");
     }
 
+    /* Función: Cargar Imagenes Generales
+       Dominio: No recibe ningún parámetro
+       Codominio: Cargar las imágenes en sus respectiva variable como las imágenes del tablero,
+              acero,cesped,puerta,bomba y ladrillo
+*/
     public void CargarImagenesGenerales(){
         acero = loadImage("Img/acero.png");
         ladrillo = loadImage("Img/ladrillo.png");
@@ -50,6 +63,11 @@ public class GamePanel {
         puertita = loadImage("Img/puerta.png");
     }
 
+    /* Función: Create Panel
+       Dominio: No recibe ningún parámetro
+       Codominio: Crea el panel de la interfaz donde se meustra el juego
+                  permite mostrar el tablero, el tiempo, puntajes y vidas
+*/
     private void createPanel(){
         frame = new JFrame("Bomberman");
         frame.setSize(AnchoTablero,LargoTablero);
@@ -91,6 +109,10 @@ public class GamePanel {
 
     }
 
+    /* Función: loadImage
+       Dominio: la ruta del archivo en string
+       Codominio: cargar la imagen
+*/
     public static BufferedImage loadImage(String path){
         File file = new File(path);
         try {
@@ -102,6 +124,12 @@ public class GamePanel {
         return null;
     }
 
+    /* Función: DibujarMapa
+       Dominio: Recibe el gráfico para dibujar mapa
+       Codominio: Muestra el tiempo,vida,puntaje según las características puestas
+                  va colocando la imagen de acero,muro o cesped según la matriz se referencia
+                 también coloca en el tablero la puertas, las bombas y los cupones
+*/
     public void dibujarMapa(Graphics g){
         timeLabel.setText("Tiempo: " + Juego.getTiempo());
         lifeLabel.setText("Vidas: " + Heroe.getVida());
@@ -144,6 +172,10 @@ public class GamePanel {
 
     }
 
+    /* Función: DibujarGameover
+      Dominio: Recibe el gráfico para dibujar mapa
+      Codominio: Pone un fondo en negro con las letras game over según las características definidas
+    */
     public static void dibujarGameover(Graphics g) {
         //Para poner fondo en negro,con un rectangulo
         g.setColor(Color.black);
@@ -156,12 +188,22 @@ public class GamePanel {
         g.drawString("Game Over!",400,300);
     }
 
+    /* Función: DibujarPuerta
+      Dominio: Recibe el gráfico para dibujar mapa
+      Codominio: Coloca la puerta pero en la matriz se muestra como un ladrillo
+                 por lo tanto se encuentra por las posiciones x y
+    */
     public static boolean dibujarPuerta(){
         int x = Nivel.puerta.getPosX();
         int y = Nivel.puerta.getPosY();
         return Tablero.Mapa[x][y] == '-';
     }
 
+    /* Función: DibujarCupon
+      Dominio: Recibe el gráfico para dibujar mapa
+      Codominio: Coloca los cupones pero en la matriz se muestra como un ladrillo
+                 por lo tanto se encuentra por las posiciones x y
+*/
     public static boolean dibujarCupon(){
         Heroe.EncontrarCupon();
         int x = Nivel.cupon.getPosX();
@@ -169,9 +211,18 @@ public class GamePanel {
         return Tablero.Mapa[x][y] == '-' && !Nivel.cupon.getEstado();
     }
 
+    /* Función: DibujarBomba
+       Dominio: Recibe el gráfico para dibujar mapa
+       Codominio: verificar si el héroe se ha colocado bomba
+*/
     public static boolean dibujarBomba(){
         return !Juego.list_bomba.isEmpty();
     }
+
+        /* --------------------------------------------------
+                      Getters y Setters
+       --------------------------------------------------
+    */
 
     public Canvas getCanvas() {
         return canvas;

@@ -14,6 +14,10 @@ public class KeyManager implements KeyListener, ActionListener {
         keys = new boolean[256];
     }
 
+    /* Función: Tick
+       Dominio: No recibe ningún parámetro
+       Codominio: Reconoce cuál tecla se está presionando
+*/
     public void tick(){
         up=keys[KeyEvent.VK_W] || keys[KeyEvent.VK_UP];
         down = keys[KeyEvent.VK_S] || keys[KeyEvent.VK_DOWN] ;
@@ -21,6 +25,10 @@ public class KeyManager implements KeyListener, ActionListener {
         right = keys[KeyEvent.VK_D] || keys[KeyEvent.VK_RIGHT] ;
     }
 
+    /* Función: KeyPressed
+       Dominio: El evento de la tecla que se esta presionando
+       Codominio: Según la tecla que se presione va a llamar a una función de otra clase
+*/
     @Override
     public void keyPressed(KeyEvent e) {
         keys[e.getKeyCode()] = true;

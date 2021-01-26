@@ -8,6 +8,10 @@ public abstract class Personaje {
     private boolean Estado;
     private double Velocidad;
 
+    /* Función: Personaje
+   Dominio: Id,Posiciones x,y, direccion de tipo entero,velocidad de tipo flotante  y el estado de tipo booleano
+   Codominio: Constructor que llama a las variables de la clase que se vaya a utilizar
+*/
     public Personaje(int id,int PosX, int PosY, double Velocidad, int Direccion, boolean Estado) {
         this.id=id;
         this.PosX = PosX;
@@ -24,6 +28,10 @@ public abstract class Personaje {
     public abstract void tick(int dir);
     public abstract void render(Graphics g);
 
+    /* --------------------------------------------------
+                  Getters y Setters
+   --------------------------------------------------
+*/
     public int getId() {
         return id;
     }

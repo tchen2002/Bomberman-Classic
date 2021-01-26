@@ -12,6 +12,10 @@ public class Villano extends Personaje{
     private double Velocidad;
     private String Nombre;
 
+    /* Función: Villano
+      Dominio: Id,Posiciones x,y, direccion,tipo de tipo entero, el estado y el camino de tipo booleano
+      Codominio: Constructor que llama a las variables de la clase que se vaya a utilizar
+*/
     public Villano(int id,int PosX, int PosY, int Direccion, int tipo, boolean Estado,boolean Camino) {
         this.id=id;
         this.PosX=PosX;
@@ -23,6 +27,11 @@ public class Villano extends Personaje{
 
     }
 
+    /* Función: Villano
+       Dominio: Recibe un tipo,nivel de inicio,inteligencia artificial y un puntaje de tipo entero, tambien
+              nombre de tipo string, velocidad de tipo flotante y atm de tipo booleano
+       Codominio: Inicializa variables que se van a utilizar
+    */
     public Villano(int tipo,String nombre,int niv_ini,double velocidad, boolean atm, int IA,  int punt) {
         Tipo = tipo;
         Nombre = nombre;
@@ -50,6 +59,10 @@ public class Villano extends Personaje{
     public void render(Graphics g) {
     }
 
+    /* Función: COnvertir Monedas Giratorias
+       Dominio: No recibe ningún parámetro
+       Codominio: cambiar el tipo de villano al de moneda giratoria y agregar más villanos del tipo moneda giratoria
+*/
     public static void ConvertirMonedasG(){
         int largo=Nivel.list_villano.size();
         int cont=0;
@@ -69,6 +82,10 @@ public class Villano extends Personaje{
         }
     }
 
+    /* Función: Dibujar Villano
+       Dominio: Recibe la grafica que permite mostrar villano
+       Codominio: Se realiza un ciclo de la cantidad de villanos en el arreglo y obtienen los datos relacionados a este
+    */
     public static void DibujarVillanos(Graphics g){
         for(int i=0;i<Nivel.list_villano.size();i++){
             if(Nivel.list_villano.get(i).getEstado()){
@@ -77,6 +94,12 @@ public class Villano extends Personaje{
             }
         }
     }
+
+
+     /* --------------------------------------------------
+                      Getters y Setters
+       --------------------------------------------------
+    */
 
     public int getId() {
         return id;

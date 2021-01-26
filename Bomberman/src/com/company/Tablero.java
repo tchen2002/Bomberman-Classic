@@ -4,9 +4,14 @@ import java.util.*;
 
 public class Tablero {
     public static char[][] Mapa;
-    int Largo, Ancho,ProbaLadrillo;
+    public static int Largo, Ancho,ProbaLadrillo;
     public static boolean estado_cupon=false;
 
+    /* Función: Tablero
+     Dominio: Recibe el largo y ancho del tablero y la probabilidad de los ladrillos
+     Codominio: Constructor que llama a las variables de la clase que se vaya a utilizar
+                Crea un matriz de tipo caracter que va a ser el mapa
+    */
     public Tablero(int Largo,int Ancho,int ProbaLadrillo){
         this.Largo = Largo;
         this.Ancho = Ancho;
@@ -15,6 +20,10 @@ public class Tablero {
         //llenarMatriz();
     }
 
+    /* Función: Llena Matriz
+       Dominio: No recibe ningún parámetro
+       Codominio: Llena la matriz con dos ciclos puede ser con una  -, A o L
+    */
     public void llenarMatriz(){
         for (int i = 0; i < Largo; i++) {
             for (int j = 0; j < Ancho; j++) {
@@ -35,6 +44,11 @@ public class Tablero {
         }
     }
 
+    /* Función: Generar Random
+   Dominio: No recibe ningún parámetro
+   Codominio: Se crea una instancia de generar random de 0 a 100
+              y retorna si el numero no es mayor que la probabilidad
+    */
     public boolean generarRandom(){
         boolean res;
         double num;
@@ -44,6 +58,10 @@ public class Tablero {
         return res;
     }
 
+       /* Función: Tipo Cuadrado
+      Dominio: recibe las coordenas
+      Codominio: retorna true si es '-' y en false en el caso contrario
+        */
     public static boolean tipoCuadrado(int i, int j){
         if(Mapa[i][j] == 'A' || Mapa[i][j] == 'L'){
             return false;
@@ -58,6 +76,11 @@ public class Tablero {
         return true;
     }
 
+    /* Función: Colision
+   Dominio: Recibe coordenadas x,y y una dirección de tipo entero
+   Codominio: Verifica si la siguiente posición es un muro o un ladrillo
+              si lo es retorna 1 de lo contrario retorna 0
+*/
     public static int colision(int i, int j,int dir){
         if (dir == 0) {  i -= 1;  }
 
@@ -86,6 +109,10 @@ public class Tablero {
         return 0;
     }
 
+    /* Función: Explosion
+       Dominio: Recibe coordenadas x,y y un largo de tipo entero
+       Codominio: si un ladrillo está dentro del rango de explosión se cambia por '-'
+*/
     public static ArrayList<Bomba> explosion(int i, int j,int largo){
         ArrayList<Bomba> list_pos = new ArrayList<Bomba>();
         list_pos.add(new Bomba(i,j));
@@ -157,6 +184,26 @@ public class Tablero {
         return(list_pos);
     }
 
+        /* Función: CantEspacio
+       Dominio:No recibe ningún parámetro
+       Codominio: retorna la cantidad de cuadrados de tipo césped y ladrillo
+        */
+    public static int CantEspacio(){
+        int cont=0;
+        for (int i = 0; i < Largo; i++) {
+            for (int j = 0; j < Ancho; j++) {
+                if(Mapa[i][j]=='-' || Mapa[i][j]=='L'){
+                    cont++;
+                }
+            }
+        }
+        return cont;
+    }
+
+    /* --------------------------------------------------
+                      Getters y Setters
+       --------------------------------------------------
+    */
     public char[][] getMapa() {
         return Mapa;
     }

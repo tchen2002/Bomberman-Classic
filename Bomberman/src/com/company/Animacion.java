@@ -9,6 +9,9 @@ public class Animacion {
     private long lastTime, timer;
     private final BufferedImage[] frames;
 
+    /* Función: Animacion
+   Dominio: Recibe la velocidad como entero y un buffer de la imagen
+   Codominio: Es el constructor que permite utilizar las variables*/
     public Animacion(int speed, BufferedImage[] frames){
         this.speed = speed;
         this.frames = frames;
@@ -17,6 +20,9 @@ public class Animacion {
         lastTime = System.currentTimeMillis();
     }
 
+    /* Función: tick
+   Dominio: No recibe ningún parámetro
+   Codominio: Reproducir las imágenes según el índice*/
     public void tick(){
         timer += System.currentTimeMillis() - lastTime;
         lastTime = System.currentTimeMillis();
@@ -29,6 +35,9 @@ public class Animacion {
         }
     }
 
+    /* Función: GetCurrentFrame
+    Dominio: No recibe ningún parámetro
+    Codominio: Devuelve el frame actual según la posición del índice*/
     public BufferedImage getCurrentFrame(){
         return frames[index];
     }

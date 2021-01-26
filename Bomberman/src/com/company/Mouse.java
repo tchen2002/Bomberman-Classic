@@ -14,6 +14,12 @@ public class Mouse implements MouseListener, MouseMotionListener {
     public void mouseClicked(MouseEvent mouseEvent) {
     }
 
+    /* Función: mousePressed
+       Dominio: El evento del que se esta presionando
+       Codominio: Según el click que se presione va a llamar a una función de otra clase
+                  Si es izquierdo coloca una bomba, derecho detona la bomba que lleve mas tiempo en
+                  en el tablero
+    */
     @Override
     public void mousePressed(MouseEvent e) {
         if(e.getButton() == MouseEvent.BUTTON1) {

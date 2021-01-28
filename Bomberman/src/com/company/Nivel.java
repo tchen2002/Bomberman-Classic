@@ -39,7 +39,7 @@ public class Nivel {
         list_villano_copia = list_villano;
         generarPuerta();
         generarCupon(getNivel());
-        /*
+
         System.out.println("NIVEL");
         System.out.println(getNivel());
         System.out.println("Puerta");
@@ -48,7 +48,7 @@ public class Nivel {
         System.out.println("CUPON");
         System.out.println(cupon.getPosX());
         System.out.println(cupon.getPosY());
-    */
+
     }
 
     /* Función: Enemigos

@@ -51,7 +51,7 @@ public class Juego implements Runnable, ActionListener {
         tablero = new Tablero(Largo,Ancho,ProbaLadrillo);
         tablero.llenarMatriz();
         observer = new Observer(0);
-        nivel = new Nivel(1,CantVillano);
+        nivel = new Nivel(3,CantVillano);
         nivel.iniciar();
         keyManager = new KeyManager();
         mouse = new Mouse();
